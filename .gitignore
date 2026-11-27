@@ -1,0 +1,9 @@
+.env
+.env.*
+!.env.example
+.godot/
+*.import
+*.exe
+*.log
+build/
+__pycache__/

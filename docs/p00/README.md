@@ -1,6 +1,6 @@
 # P00 — Homologação técnica e direção artística
 
-**Status: executada; aguardando aprovação visual do usuário.** 27/11/2026. Não é a implementação do MMORPG. O lote entrega inventário integral dos arquivos adquiridos, seleção amostral, critérios e prova técnica reproduzível; não promove automaticamente todos os candidatos a runtime.
+**Status: aprovada pelo usuário em 27/11/2026.** 27/11/2026. Não é a implementação do MMORPG. O lote entrega inventário integral dos arquivos adquiridos, seleção amostral, critérios e prova técnica reproduzível; não promove automaticamente todos os candidatos a runtime.
 
 ## Entregas e evidências
 
@@ -58,4 +58,4 @@ Para testar a prova: abrir o projeto em Godot 4.7.2, importar os GLBs e executar
 
 **Critérios cumpridos:** audit completo da coleção adquirida, catálogo de ações por nome, cobertura e lacunas, pipeline reproduzível com 21 GLBs, render visual comparativo, prova de importação Godot, arquitetura escolhida e AGENTS publicado.
 
-**Pendências para aprovação e P0:** aprovação da direção artística pelo usuário; teste GUI/renderer e benchmark em hardware-alvo (headless não mede FPS); criar avatar neutro e rigs/colliders/LOD finais, fechar três famílias P0 de monstros ausentes, ferramentas T1, nós cobre/erva e UI inicial. Licenças de fontes e de quaisquer componentes internos de terceiros devem ser revisadas antes de promoção. Não foi feita audição individual das 191 entradas. Nenhum candidato foi promovido ao runtime de produção. P00 é entregue como etapa de pré-produção técnica, não aprovação automática da arte.
+**Pendências técnicas para P0:** teste GUI/renderer e benchmark em hardware-alvo (headless não mede FPS); criar avatar neutro e rigs/colliders/LOD finais, fechar três famílias P0 de monstros ausentes, ferramentas T1, nós cobre/erva e UI inicial. Licenças de fontes e de quaisquer componentes internos de terceiros devem ser revisadas antes de promoção. Não foi feita audição individual das 191 entradas. Nenhum candidato foi promovido ao runtime de produção. P00 é entregue como etapa de pré-produção técnica, não aprovação automática da arte.

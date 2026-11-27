@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: colony_world
+      POSTGRES_USER: colony_dev
+      POSTGRES_PASSWORD: ${CW_DB_PASSWORD:?Set CW_DB_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - colony_db:/var/lib/postgresql/data
+      - ./migrations/001_foundation.sql:/docker-entrypoint-initdb.d/001_foundation.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U colony_dev -d colony_world"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+volumes:
+  colony_db:
