@@ -16,6 +16,6 @@ Não há motor definido ainda: esta estrutura é independente de engine. Apenas 
 
 ## Importação e validação
 
-Os 14 pacotes individuais estão publicados integralmente como ZIPs originais em source/. Os hashes Git remotos coincidem com os arquivos baixados e o manifesto fixa SHA-256, tamanho, URL e licença indicada. Execute `python3 tools/download_assets.py` na raiz para validar os arquivos (e baixar um arquivo ausente). O workflow Import pinned original assets também permite restaurar pacotes ausentes.
+Os pacotes individuais do GDD são preservados integralmente em source/, incluindo originais de 3D, UI, SFX e trilhas. Cada arquivo tem URL, autor, licença indicada, tamanho e SHA-256 fixados no manifesto. Execute `python3 tools/download_assets.py` na raiz para validar arquivos presentes e baixar ausentes; ZIPs também passam por teste CRC.
 
-As coleções Q10 e M01 são índices, com links de candidatos complementares em credits/complementary-candidates.md. A importação de arquivos não equivale à homologação estética ou auditoria de licenças internas.
+Q10 e M01 são índices, não arquivos. As entradas individuais citadas no GDD foram selecionadas para importação; consultar manifesto para o status de publicação. O arquivo fonte opcional de edição musical de The Field Of Dreams não faz parte do runtime (somente faixa original). Nenhum pacote ainda está homologado artisticamente ou teve licenças internas auditadas.
