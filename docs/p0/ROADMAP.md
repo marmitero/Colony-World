@@ -4,8 +4,8 @@ P00 aprovada em 27/11/2026. Cada etapa exige código, teste, registro e aprovaç
 
 | Etapa | Entrega e critério |
 |---|---|
-| P0.1 | Fundação cliente/servidor/schema, conexão local e jogar.bat; smoke test |
-| P0.2 | Tela inicial, autenticação e criação de conta; validação e sessão |
+| P0.1 ✅ aprovada | Fundação cliente/servidor/schema, conexão local e jogar.bat; smoke test |
+| P0.2 ⏳ entregue | Tela inicial, autenticação e criação de conta; validação e sessão |
 | P0.3 | Seleção/criação de até 5 personagens; limites persistentes |
 | P0.4 | Vila Bravamar: direção artística original, NPCs e arena delimitada |
 | P0.5 | Avatar, câmera e movimento; validação de estado |

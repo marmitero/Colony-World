@@ -31,11 +31,20 @@ P0 iniciada após aprovação da P00.
 - [Roadmap da P0](docs/p0/ROADMAP.md)
 - [Relatório P0.1 e testes](docs/p0/P0.1.md)
 
+**P0.1 aprovada pelo usuário:** execução real Windows confirmada.
+
 ### Testar no Windows
 
 1. Baixe e extraia o repositório.
-2. Instale **Go 1.24+** uma vez e disponibilize **Godot 4.7.2** (executável na raiz, em tools/godot, no PATH ou variável GODOT_EXE).
+2. Instale **Go 1.24+** uma vez e disponibilize **Godot 4.7.2** (executável na raiz, em tools/godot/GODOT_EXE.exe, no PATH ou variável GODOT_EXE).
 3. Dê duplo clique em `jogar.bat`. Ele compila e inicia o servidor local, importa o projeto Godot, abre o cliente e encerra apenas o servidor que iniciou ao fechar.
-4. Na P0.1, verá a prova de conexão verde; ainda não há login nem jogabilidade. PostgreSQL/Docker são opcionais para esta prova.
+4. Na P0.2, verá a tela inicial animada, cadastro e login local. PostgreSQL/Docker não são obrigatórios. A jogabilidade começa nas fases seguintes.
 
 Não há downloads automáticos, scripts de instalação nem credenciais versionadas.
+
+## P0.2 — Tela inicial e autenticação
+
+- [Relatório P0.2](docs/p0/P0.2.md)
+- [Contrato de autenticação](shared/protocol/v1/README.md)
+
+Contas de teste persistentes em %LOCALAPPDATA%/ColonyWorld/dev; não usar credenciais reais. Sessão é local e termina no restart. P0.3 será seleção e criação de personagens.

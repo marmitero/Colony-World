@@ -1,4 +1,4 @@
-name: P0.1 foundation checks
+name: Colony World foundation checks
 on:
   push:
     paths: ["server/**", "tools/launch.ps1", "jogar.bat", "shared/**", "migrations/**", "tests/**", ".github/workflows/p01-ci.yml"]
@@ -52,4 +52,5 @@ jobs:
       - uses: actions/checkout@v4
       - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f migrations/001_foundation.sql
       - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f migrations/001_foundation.sql
+      - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f migrations/002_local_auth.sql
       - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f tests/check_schema.sql

@@ -1,12 +1,16 @@
 package transport
 
 import (
+	"colony.world/server/internal/auth"
 	"encoding/json"
+	"errors"
+	"io"
 	"net/http"
+	"strings"
 )
 
 const ProtocolVersion = 1
-const Phase = "P0.1"
+const Phase = "P0.2"
 
 type Health struct {
 	Service         string `json:"service"`
@@ -15,23 +19,103 @@ type Health struct {
 	ProtocolVersion int    `json:"protocol_version"`
 	Database        string `json:"database"`
 }
+type credentials struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 
-func NewHandler() http.Handler {
+func NewHandler(s *auth.Service) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
-		write(w, Health{"colony-world", "ok", Phase, ProtocolVersion, "not_connected"})
+		write(w, 200, Health{"colony-world", "ok", Phase, ProtocolVersion, "local_file"})
 	})
 	mux.HandleFunc("GET /v1/hello", func(w http.ResponseWriter, r *http.Request) {
-		write(w, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "foundation", "gameplay": false})
+		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "authentication", "gameplay": false})
+	})
+	mux.HandleFunc("POST /v1/auth/register", func(w http.ResponseWriter, r *http.Request) {
+		var c credentials
+		if !decode(w, r, &c) {
+			return
+		}
+		a, err := s.Register(c.Email, c.Password)
+		if err != nil {
+			authError(w, err)
+			return
+		}
+		write(w, 201, a)
+	})
+	mux.HandleFunc("POST /v1/auth/login", func(w http.ResponseWriter, r *http.Request) {
+		var c credentials
+		if !decode(w, r, &c) {
+			return
+		}
+		a, err := s.Login(c.Email, c.Password)
+		if err != nil {
+			authError(w, err)
+			return
+		}
+		write(w, 200, a)
+	})
+	mux.HandleFunc("GET /v1/auth/me", func(w http.ResponseWriter, r *http.Request) {
+		a, err := s.Me(bearer(r))
+		if err != nil {
+			authError(w, err)
+			return
+		}
+		write(w, 200, a)
+	})
+	mux.HandleFunc("POST /v1/auth/logout", func(w http.ResponseWriter, r *http.Request) {
+		s.Logout(bearer(r))
+		w.WriteHeader(204)
 	})
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Cache-Control", "no-store")
+		// Native local client only; reject browser-originated requests.
+		if r.Header.Get("Origin") != "" {
+			write(w, 403, map[string]string{"error": "forbidden_origin"})
+			return
+		}
 		mux.ServeHTTP(w, r)
 	})
 }
-
-func write(w http.ResponseWriter, body any) {
+func decode(w http.ResponseWriter, r *http.Request, out any) bool {
+	if !strings.HasPrefix(strings.ToLower(r.Header.Get("Content-Type")), "application/json") {
+		write(w, 415, map[string]string{"error": "invalid_content_type"})
+		return false
+	}
+	r.Body = http.MaxBytesReader(w, r.Body, 4096)
+	d := json.NewDecoder(r.Body)
+	d.DisallowUnknownFields()
+	if d.Decode(out) != nil || d.Decode(new(any)) != io.EOF {
+		write(w, 400, map[string]string{"error": "invalid_request"})
+		return false
+	}
+	return true
+}
+func bearer(r *http.Request) string {
+	t, ok := strings.CutPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if !ok || len(t) != 43 {
+		return ""
+	}
+	return t
+}
+func authError(w http.ResponseWriter, err error) {
+	status, code := 500, "internal_error"
+	switch {
+	case errors.Is(err, auth.ErrInvalid):
+		status, code = 400, "invalid_credentials"
+	case errors.Is(err, auth.ErrDuplicate):
+		status, code = 409, "account_unavailable"
+	case errors.Is(err, auth.ErrUnauthorized):
+		status, code = 401, "session_expired"
+	case errors.Is(err, auth.ErrLimited):
+		status, code = 429, "rate_limited"
+	}
+	write(w, status, map[string]string{"error": code})
+}
+func write(w http.ResponseWriter, status int, body any) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(body)
 }

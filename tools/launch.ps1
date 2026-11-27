@@ -31,7 +31,7 @@ function Find-Godot {
 function Get-Health {
     try {
         $h = Invoke-RestMethod -Uri "http://127.0.0.1:8090/healthz" -TimeoutSec 1
-        return ($h.service -eq "colony-world" -and $h.status -eq "ok" -and $h.phase -eq "P0.1" -and $h.protocol_version -eq 1)
+        return ($h.service -eq "colony-world" -and $h.status -eq "ok" -and $h.phase -eq "P0.2" -and $h.protocol_version -eq 1)
     } catch { return $false }
 }
 try {
@@ -52,6 +52,8 @@ try {
             if ($LASTEXITCODE -ne 0) { throw "Falha na compilacao do servidor." }
         } finally { Pop-Location }
         $env:CW_ADDR = "127.0.0.1:8090"
+        if (-not $env:CW_DATA_DIR) { $env:CW_DATA_DIR = Join-Path $env:LOCALAPPDATA "ColonyWorld\dev" }
+        Write-Host "Dados de conta local: $env:CW_DATA_DIR"
         $ownProcess = Start-Process -FilePath $exe -WorkingDirectory $server -PassThru -WindowStyle Hidden -RedirectStandardOutput (Join-Path $build "server.out.log") -RedirectStandardError (Join-Path $build "server.err.log")
         $ready = $false
         for ($i=0; $i -lt 30; $i++) {
@@ -74,3 +76,4 @@ try {
         Stop-Process -Id $ownProcess.Id -ErrorAction SilentlyContinue
     }
 }
+
