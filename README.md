@@ -48,3 +48,5 @@ Não há downloads automáticos, scripts de instalação nem credenciais version
 - [Contrato de autenticação](shared/protocol/v1/README.md)
 
 Contas de teste persistentes em %LOCALAPPDATA%/ColonyWorld/dev; não usar credenciais reais. Sessão é local e termina no restart. P0.3 será seleção e criação de personagens.
+
+**Porta local:** 3000 (127.0.0.1). O launcher não encerra processos de terceiros que estejam usando a porta.

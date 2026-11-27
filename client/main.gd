@@ -1,5 +1,5 @@
 extends Control
-const BASE := "http://127.0.0.1:8090"
+const BASE := "http://127.0.0.1:3000"
 const Harbor = preload("res://harbor.gd")
 var harbor: Node3D
 var http: HTTPRequest

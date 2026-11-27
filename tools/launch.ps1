@@ -30,7 +30,7 @@ function Find-Godot {
 }
 function Get-Health {
     try {
-        $h = Invoke-RestMethod -Uri "http://127.0.0.1:8090/healthz" -TimeoutSec 1
+        $h = Invoke-RestMethod -Uri "http://127.0.0.1:3000/healthz" -TimeoutSec 1
         return ($h.service -eq "colony-world" -and $h.status -eq "ok" -and $h.phase -eq "P0.2" -and $h.protocol_version -eq 1)
     } catch { return $false }
 }
@@ -51,7 +51,7 @@ try {
             & $go.Source build -buildvcs=false -trimpath -o $exe ./cmd/colony
             if ($LASTEXITCODE -ne 0) { throw "Falha na compilacao do servidor." }
         } finally { Pop-Location }
-        $env:CW_ADDR = "127.0.0.1:8090"
+        $env:CW_ADDR = "127.0.0.1:3000"
         if (-not $env:CW_DATA_DIR) { $env:CW_DATA_DIR = Join-Path $env:LOCALAPPDATA "ColonyWorld\dev" }
         Write-Host "Dados de conta local: $env:CW_DATA_DIR"
         $ownProcess = Start-Process -FilePath $exe -WorkingDirectory $server -PassThru -WindowStyle Hidden -RedirectStandardOutput (Join-Path $build "server.out.log") -RedirectStandardError (Join-Path $build "server.err.log")
@@ -61,7 +61,7 @@ try {
             if ($ownProcess.HasExited) { break }
             Start-Sleep -Milliseconds 500
         }
-        if (-not $ready) { throw "Servidor nao respondeu. Verifique build\server.err.log e a porta 8090." }
+        if (-not $ready) { throw "Servidor nao respondeu. Verifique build\server.err.log e a porta 3000." }
     }
     Write-Host "Servidor local conectado. Preparando cliente..."
     $import = Start-Process -FilePath $godot -ArgumentList @("--headless", "--editor", "--import", "--path", ('"{0}"' -f $client)) -Wait -PassThru -WindowStyle Hidden

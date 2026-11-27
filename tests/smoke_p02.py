@@ -7,7 +7,7 @@ def start(env):
  p=subprocess.Popen([str(server)],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
  for _ in range(100):
   try:
-   with urllib.request.urlopen("http://127.0.0.1:8090/healthz",timeout=1) as r:h=json.load(r)
+   with urllib.request.urlopen("http://127.0.0.1:3000/healthz",timeout=1) as r:h=json.load(r)
    assert h["phase"]=="P0.2" and h["database"]=="local_file"
    return p
   except OSError:time.sleep(.1)
@@ -15,11 +15,11 @@ def start(env):
 def stop(p):
  p.terminate();p.wait(timeout=10)
 def post(path,body):
- req=urllib.request.Request("http://127.0.0.1:8090"+path,json.dumps(body).encode(),{"Content-Type":"application/json"})
+ req=urllib.request.Request("http://127.0.0.1:3000"+path,json.dumps(body).encode(),{"Content-Type":"application/json"})
  with urllib.request.urlopen(req,timeout=5) as r:return json.load(r)
-with socket.socket() as s:s.bind(("127.0.0.1",8090))
+with socket.socket() as s:s.bind(("127.0.0.1",3000))
 with tempfile.TemporaryDirectory() as base:
- env=os.environ.copy();env["CW_DATA_DIR"]=base;env["CW_ADDR"]="127.0.0.1:8090"
+ env=os.environ.copy();env["CW_DATA_DIR"]=base;env["CW_ADDR"]="127.0.0.1:3000"
  p=start(env)
  try:
   r=subprocess.run([godot,"--headless","--path",str(client),"--script","res://auth_smoke.gd"],capture_output=True,text=True,timeout=40)

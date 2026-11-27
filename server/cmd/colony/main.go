@@ -18,7 +18,7 @@ import (
 func main() {
 	addr := os.Getenv("CW_ADDR")
 	if addr == "" {
-		addr = "127.0.0.1:8090"
+		addr = "127.0.0.1:3000"
 	}
 	host, _, err := net.SplitHostPort(addr)
 	if err != nil || (host != "127.0.0.1" && host != "localhost" && host != "::1") {
