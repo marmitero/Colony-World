@@ -1,12 +1,6 @@
 name: Import pinned original assets
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/import-assets.yml'
-      - 'assets/manifest.csv'
-      - 'tools/download_assets.py'
 permissions:
   contents: write
 jobs:

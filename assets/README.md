@@ -19,3 +19,5 @@ Não há motor definido ainda: esta estrutura é independente de engine. Apenas 
 Os pacotes individuais do GDD são preservados integralmente em source/, incluindo originais de 3D, UI, SFX e trilhas. Cada arquivo tem URL, autor, licença indicada, tamanho e SHA-256 fixados no manifesto. Execute `python3 tools/download_assets.py` na raiz para validar arquivos presentes e baixar ausentes; ZIPs também passam por teste CRC.
 
 Q10 e M01 são índices, não arquivos. As entradas individuais citadas no GDD foram selecionadas para importação; consultar manifesto para o status de publicação. O arquivo fonte opcional de edição musical de The Field Of Dreams não faz parte do runtime (somente faixa original). Nenhum pacote ainda está homologado artisticamente ou teve licenças internas auditadas.
+
+**Status final:** 33 arquivos originais publicados e conferidos por SHA Git remoto; 576.082.362 bytes. Todas as 27 compilações ZIP passaram teste CRC (as seis faixas de áudio individuais foram verificadas por SHA-256).

@@ -1,6 +1,6 @@
 # Candidatos complementares
 
-Entradas individuais das coleções Q10 e M01; ainda não baixadas nem homologadas.
+Entradas individuais das coleções Q10 e M01; arquivos originais publicados e integridade conferida. Homologação artística e licenças internas pendentes.
 
 - [Stylized Nature MegaKit](https://opengameart.org/content/stylized-nature-megakit)
 - [Fantasy Props MegaKit](https://opengameart.org/content/fantasy-props-megakit)
