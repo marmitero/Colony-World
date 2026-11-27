@@ -14,6 +14,8 @@ Originais não são automaticamente assets de produção. Verificar licença, ar
 
 Não há motor definido ainda: esta estrutura é independente de engine. Apenas conteúdo aprovado será colocado em runtime.
 
-## Importação reproduzível
+## Importação e validação
 
-Os 14 arquivos originais foram baixados localmente e tiveram tamanho, SHA-256 e CRC registrados. Execute `python3 tools/download_assets.py` na raiz para obter e validar os arquivos ausentes. A presença remota deve ser confirmada pela árvore Git; status do manifesto indica verificação local, não publicação.
+Os 14 pacotes individuais estão publicados integralmente como ZIPs originais em source/. Os hashes Git remotos coincidem com os arquivos baixados e o manifesto fixa SHA-256, tamanho, URL e licença indicada. Execute `python3 tools/download_assets.py` na raiz para validar os arquivos (e baixar um arquivo ausente). O workflow Import pinned original assets também permite restaurar pacotes ausentes.
+
+As coleções Q10 e M01 são índices, com links de candidatos complementares em credits/complementary-candidates.md. A importação de arquivos não equivale à homologação estética ou auditoria de licenças internas.
