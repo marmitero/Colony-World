@@ -1,0 +1,21 @@
+Animated Human by @Quaternius/
+Animated Human by @Quaternius/Blend/
+Animated Human by @Quaternius/Blend/Animated Human.blend
+Animated Human by @Quaternius/Blend/Textures/
+Animated Human by @Quaternius/Blend/Textures/ClothedDarkSkin.png
+Animated Human by @Quaternius/Blend/Textures/ClothedDarkSkin1.png
+Animated Human by @Quaternius/Blend/Textures/ClothedDarkSkin2.png
+Animated Human by @Quaternius/Blend/Textures/ClothedLightSkin.png
+Animated Human by @Quaternius/Blend/Textures/ClothedLightSkin1.png
+Animated Human by @Quaternius/Blend/Textures/ClothedLightSkin2.png
+Animated Human by @Quaternius/Blend/Textures/NakedDarkSkin.png
+Animated Human by @Quaternius/Blend/Textures/NakedLightSkin.png
+Animated Human by @Quaternius/Blend/Textures/TextureTutorial.png
+Animated Human by @Quaternius/DAE/
+Animated Human by @Quaternius/DAE/Animated Human.dae
+Animated Human by @Quaternius/FBX/
+Animated Human by @Quaternius/FBX/Animated Human.fbx
+Animated Human by @Quaternius/License.txt
+Animated Human by @Quaternius/OBJ/
+Animated Human by @Quaternius/OBJ/Animated Human.mtl
+Animated Human by @Quaternius/OBJ/Animated Human.obj
