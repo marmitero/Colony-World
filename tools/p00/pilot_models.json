@@ -1,0 +1,170 @@
+[
+  {
+    "id": "avatar",
+    "pack": "Q01",
+    "stem": "Monk",
+    "height": 1.75,
+    "category": "characters",
+    "format": "fbx"
+  },
+  {
+    "id": "merchant",
+    "pack": "Q01",
+    "stem": "Ranger",
+    "height": 1.75,
+    "category": "characters",
+    "format": "fbx"
+  },
+  {
+    "id": "slime",
+    "pack": "Q04",
+    "stem": "Slime",
+    "height": 0.65,
+    "category": "creatures",
+    "format": "fbx"
+  },
+  {
+    "id": "skeleton",
+    "pack": "Q04",
+    "stem": "Skeleton",
+    "height": 1.8,
+    "category": "creatures",
+    "format": "fbx"
+  },
+  {
+    "id": "deer",
+    "pack": "Q19",
+    "stem": "Deer",
+    "height": 1.4,
+    "category": "creatures",
+    "format": "fbx"
+  },
+  {
+    "id": "cow",
+    "pack": "Q07",
+    "stem": "Cow",
+    "height": 1.45,
+    "category": "creatures",
+    "format": "fbx"
+  },
+  {
+    "id": "chicken",
+    "pack": "Q19",
+    "stem": "Chicken",
+    "height": 0.65,
+    "category": "creatures",
+    "format": "fbx"
+  },
+  {
+    "id": "house",
+    "pack": "Q05",
+    "stem": "House_1",
+    "height": 5.0,
+    "category": "environment",
+    "format": "fbx"
+  },
+  {
+    "id": "market",
+    "pack": "Q05",
+    "stem": "MarketStand_1",
+    "height": 2.7,
+    "category": "props",
+    "format": "fbx"
+  },
+  {
+    "id": "fence",
+    "pack": "Q05",
+    "stem": "Fence",
+    "height": 1.0,
+    "category": "props",
+    "format": "fbx"
+  },
+  {
+    "id": "well",
+    "pack": "Q05",
+    "stem": "Well",
+    "height": 2.0,
+    "category": "props",
+    "format": "fbx"
+  },
+  {
+    "id": "crate",
+    "pack": "Q05",
+    "stem": "Crate",
+    "height": 0.65,
+    "category": "props",
+    "format": "fbx"
+  },
+  {
+    "id": "wheat",
+    "pack": "Q08",
+    "stem": "Wheat_4",
+    "height": 0.65,
+    "category": "environment",
+    "format": "fbx"
+  },
+  {
+    "id": "tree",
+    "pack": "Q11",
+    "stem": "CommonTree_1",
+    "height": 5.5,
+    "category": "environment",
+    "format": "gltf"
+  },
+  {
+    "id": "rock",
+    "pack": "Q11",
+    "stem": "Rock_Medium_1",
+    "height": 1.0,
+    "category": "environment",
+    "format": "gltf"
+  },
+  {
+    "id": "axe",
+    "pack": "Q12",
+    "stem": "Axe_Bronze",
+    "height": 0.95,
+    "category": "items",
+    "format": "gltf"
+  },
+  {
+    "id": "pickaxe",
+    "pack": "Q12",
+    "stem": "Pickaxe_Bronze",
+    "height": 1.0,
+    "category": "items",
+    "format": "gltf"
+  },
+  {
+    "id": "potion",
+    "pack": "Q03",
+    "stem": "Potion1_Filled",
+    "height": 0.24,
+    "category": "items",
+    "format": "fbx"
+  },
+  {
+    "id": "cart",
+    "pack": "Q05",
+    "stem": "Cart",
+    "height": 1.4,
+    "category": "props",
+    "format": "fbx"
+  },
+  {
+    "id": "grass",
+    "pack": "Q08",
+    "stem": "Grass_4",
+    "height": 0.3,
+    "category": "environment",
+    "format": "fbx"
+  },
+  {
+    "id": "paver",
+    "pack": "Q05",
+    "stem": "Path_Square",
+    "height": 0.08,
+    "category": "environment",
+    "format": "fbx"
+  }
+]

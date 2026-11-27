@@ -1,0 +1,14 @@
+; Colony World P00 — art validation sandbox, not game implementation.
+config_version=5
+[application]
+config/name="Colony World - P00 Bravamar"
+run/main_scene="res://main.tscn"
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=800
+window/stretch/mode="canvas_items"
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+environment/defaults/default_clear_color=Color(0.6, 0.72, 0.82, 1)

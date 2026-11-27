@@ -1,0 +1,935 @@
+[
+  {
+    "id": "avatar",
+    "pack": "Q01",
+    "stem": "Monk",
+    "height": 1.75,
+    "category": "characters",
+    "format": "fbx",
+    "source_member": "RPG Characters - Nov 2020/FBX/Monk.fbx",
+    "source_size_m": [
+      1.5395,
+      0.8464,
+      2.9146
+    ],
+    "scale": 0.600428,
+    "mesh_count": 2,
+    "triangles": 6714,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "CharacterArmature|CharacterArmature|Attack",
+        "frames": [
+          1.0,
+          21.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Attack2",
+        "frames": [
+          1.0,
+          21.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Death",
+        "frames": [
+          1.0,
+          29.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Attacking",
+        "frames": [
+          1.0,
+          41.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|PickUp",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit_Attacking",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Roll",
+        "frames": [
+          1.0,
+          25.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Walk",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "name": "Monk_Texture.png",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 1489456
+  },
+  {
+    "id": "merchant",
+    "pack": "Q01",
+    "stem": "Ranger",
+    "height": 1.75,
+    "category": "characters",
+    "format": "fbx",
+    "source_member": "RPG Characters - Nov 2020/FBX/Ranger.fbx",
+    "source_size_m": [
+      1.2234,
+      2.2005,
+      2.9833
+    ],
+    "scale": 0.586593,
+    "mesh_count": 6,
+    "triangles": 3806,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "CharacterArmature|CharacterArmature|Bow_Attack_Draw",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Bow_Attack_Shoot",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Death",
+        "frames": [
+          1.0,
+          29.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Attacking",
+        "frames": [
+          1.0,
+          41.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Weapon",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|PickUp",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Punch",
+        "frames": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit_Attacking",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Roll",
+        "frames": [
+          1.0,
+          25.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run_Holding",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Walk",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "name": "Ranger_Bow_Texture.png",
+        "resolved": true,
+        "size": [
+          512,
+          512
+        ]
+      },
+      {
+        "name": "Ranger_Texture.png",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 1828348
+  },
+  {
+    "id": "slime",
+    "pack": "Q04",
+    "stem": "Slime",
+    "height": 0.65,
+    "category": "creatures",
+    "format": "fbx",
+    "source_member": "Animated Monster Pack by @Quaternius/FBX/Slime.fbx",
+    "source_size_m": [
+      2.5368,
+      3.0618,
+      1.948
+    ],
+    "scale": 0.33367,
+    "mesh_count": 1,
+    "triangles": 1440,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "Armature|Armature|Slime_Attack",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "Armature|Armature|Slime_Death",
+        "frames": [
+          1.0,
+          11.0
+        ]
+      },
+      {
+        "name": "Armature|Armature|Slime_Idle",
+        "frames": [
+          1.0,
+          61.0
+        ]
+      },
+      {
+        "name": "Armature|Armature|Slime_Walk",
+        "frames": [
+          1.0,
+          21.0
+        ]
+      }
+    ],
+    "textures": [],
+    "output_bytes": 200008
+  },
+  {
+    "id": "skeleton",
+    "pack": "Q04",
+    "stem": "Skeleton",
+    "height": 1.8,
+    "category": "creatures",
+    "format": "fbx",
+    "source_member": "Animated Monster Pack by @Quaternius/FBX/Skeleton.fbx",
+    "source_size_m": [
+      2.7317,
+      1.3292,
+      5.0896
+    ],
+    "scale": 0.353663,
+    "mesh_count": 1,
+    "triangles": 1810,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "SkeletonArmature|SkeletonArmature|Skeleton_Attack",
+        "frames": [
+          1.0,
+          29.0
+        ]
+      },
+      {
+        "name": "SkeletonArmature|SkeletonArmature|Skeleton_Death",
+        "frames": [
+          1.0,
+          12.0
+        ]
+      },
+      {
+        "name": "SkeletonArmature|SkeletonArmature|Skeleton_Idle",
+        "frames": [
+          1.0,
+          81.0
+        ]
+      },
+      {
+        "name": "SkeletonArmature|SkeletonArmature|Skeleton_Running",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "SkeletonArmature|SkeletonArmature|Skeleton_Spawn",
+        "frames": [
+          1.0,
+          88.0
+        ]
+      }
+    ],
+    "textures": [],
+    "output_bytes": 211700
+  },
+  {
+    "id": "deer",
+    "pack": "Q19",
+    "stem": "Deer",
+    "height": 1.4,
+    "category": "creatures",
+    "format": "fbx",
+    "source_member": "Cute Animated Monsters - Aug 2020/FBX/Deer.fbx",
+    "source_size_m": [
+      1.8915,
+      1.4457,
+      1.9108
+    ],
+    "scale": 0.732665,
+    "mesh_count": 1,
+    "triangles": 1180,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "MonsterArmature|MonsterArmature|Bite_Front",
+        "frames": [
+          1.0,
+          13.0
+        ]
+      },
+      {
+        "name": "MonsterArmature|MonsterArmature|Bite_InPlace",
+        "frames": [
+          1.0,
+          17.0
+        ]
+      },
+      {
+        "name": "MonsterArmature|MonsterArmature|Dance",
+        "frames": [
+          1.0,
+          21.0
+        ]
+      },
+      {
+        "name": "MonsterArmature|MonsterArmature|Death",
+        "frames": [
+          1.0,
+          12.0
+        ]
+      },
+      {
+        "name": "MonsterArmature|MonsterArmature|HitRecieve",
+        "frames": [
+          1.0,
+          10.0
+        ]
+      },
+      {
+        "name": "MonsterArmature|MonsterArmature|Idle",
+        "frames": [
+          1.0,
+          61.0
+        ]
+      },
+      {
+        "name": "MonsterArmature|MonsterArmature|Jump",
+        "frames": [
+          1.0,
+          14.0
+        ]
+      },
+      {
+        "name": "MonsterArmature|MonsterArmature|No",
+        "frames": [
+          1.0,
+          13.0
+        ]
+      },
+      {
+        "name": "MonsterArmature|MonsterArmature|Walk",
+        "frames": [
+          1.0,
+          14.0
+        ]
+      },
+      {
+        "name": "MonsterArmature|MonsterArmature|Yes",
+        "frames": [
+          1.0,
+          13.0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "name": "Deer_Texture.png",
+        "resolved": true,
+        "size": [
+          512,
+          512
+        ]
+      }
+    ],
+    "output_bytes": 356740
+  },
+  {
+    "id": "cow",
+    "pack": "Q07",
+    "stem": "Cow",
+    "height": 1.45,
+    "category": "creatures",
+    "format": "fbx",
+    "source_member": "Farm Animals by @Quaternius/FBX/Cow.fbx",
+    "source_size_m": [
+      2.267,
+      9.1728,
+      5.1478
+    ],
+    "scale": 0.281671,
+    "mesh_count": 1,
+    "triangles": 796,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "Armature|Armature|Death",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "Armature|Armature|Idle",
+        "frames": [
+          1.0,
+          151.0
+        ]
+      },
+      {
+        "name": "Armature|Armature|Jump",
+        "frames": [
+          1.0,
+          42.0
+        ]
+      },
+      {
+        "name": "Armature|Armature|Run",
+        "frames": [
+          1.0,
+          35.0
+        ]
+      },
+      {
+        "name": "Armature|Armature|Walk",
+        "frames": [
+          1.0,
+          81.0
+        ]
+      },
+      {
+        "name": "Armature|Armature|WalkSlow",
+        "frames": [
+          1.0,
+          51.0
+        ]
+      }
+    ],
+    "textures": [],
+    "output_bytes": 424032
+  },
+  {
+    "id": "chicken",
+    "pack": "Q19",
+    "stem": "Chicken",
+    "height": 0.65,
+    "category": "creatures",
+    "format": "fbx",
+    "source_member": "Cute Animated Monsters - Aug 2020/FBX/Chicken.fbx",
+    "source_size_m": [
+      2.2691,
+      1.5549,
+      1.6235
+    ],
+    "scale": 0.400361,
+    "mesh_count": 1,
+    "triangles": 1040,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "MonsterArmature|MonsterArmature|Idle",
+        "frames": [
+          1.0,
+          61.0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "name": "Chicken_Texture.png",
+        "resolved": true,
+        "size": [
+          512,
+          512
+        ]
+      }
+    ],
+    "output_bytes": 275964
+  },
+  {
+    "id": "house",
+    "pack": "Q05",
+    "stem": "House_1",
+    "height": 5.0,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/House_1.fbx",
+    "source_size_m": [
+      2.1439,
+      2.6588,
+      3.39
+    ],
+    "scale": 1.474924,
+    "mesh_count": 1,
+    "triangles": 5758,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 391732
+  },
+  {
+    "id": "market",
+    "pack": "Q05",
+    "stem": "MarketStand_1",
+    "height": 2.7,
+    "category": "props",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/MarketStand_1.fbx",
+    "source_size_m": [
+      0.9509,
+      1.1898,
+      1.0492
+    ],
+    "scale": 2.573454,
+    "mesh_count": 1,
+    "triangles": 1548,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 72636
+  },
+  {
+    "id": "fence",
+    "pack": "Q05",
+    "stem": "Fence",
+    "height": 1.0,
+    "category": "props",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Fence.fbx",
+    "source_size_m": [
+      0.791,
+      0.0259,
+      0.326
+    ],
+    "scale": 3.067289,
+    "mesh_count": 1,
+    "triangles": 208,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 10064
+  },
+  {
+    "id": "well",
+    "pack": "Q05",
+    "stem": "Well",
+    "height": 2.0,
+    "category": "props",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Well.fbx",
+    "source_size_m": [
+      0.6664,
+      1.0036,
+      1.2504
+    ],
+    "scale": 1.599427,
+    "mesh_count": 1,
+    "triangles": 1870,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 107924
+  },
+  {
+    "id": "crate",
+    "pack": "Q05",
+    "stem": "Crate",
+    "height": 0.65,
+    "category": "props",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Crate.fbx",
+    "source_size_m": [
+      0.1602,
+      0.1602,
+      0.1602
+    ],
+    "scale": 4.056629,
+    "mesh_count": 1,
+    "triangles": 784,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 35084
+  },
+  {
+    "id": "wheat",
+    "pack": "Q08",
+    "stem": "Wheat_4",
+    "height": 0.65,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Nature Crops Pack - Jan 2020/FBX/Wheat_4.fbx",
+    "source_size_m": [
+      0.0978,
+      0.0559,
+      0.948
+    ],
+    "scale": 0.685659,
+    "mesh_count": 1,
+    "triangles": 102,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 6416
+  },
+  {
+    "id": "tree",
+    "pack": "Q11",
+    "stem": "CommonTree_1",
+    "height": 5.5,
+    "category": "environment",
+    "format": "gltf",
+    "source_member": "glTF/CommonTree_1.gltf",
+    "source_size_m": [
+      4.3114,
+      4.5777,
+      7.2648
+    ],
+    "scale": 0.757077,
+    "mesh_count": 1,
+    "triangles": 6265,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [
+      {
+        "name": "Bark_NormalTree",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "Bark_NormalTree_Normal",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "Leaves_NormalTree_C",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 3151876
+  },
+  {
+    "id": "rock",
+    "pack": "Q11",
+    "stem": "Rock_Medium_1",
+    "height": 1.0,
+    "category": "environment",
+    "format": "gltf",
+    "source_member": "glTF/Rock_Medium_1.gltf",
+    "source_size_m": [
+      3.2251,
+      2.9891,
+      2.2598
+    ],
+    "scale": 0.442518,
+    "mesh_count": 1,
+    "triangles": 342,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [
+      {
+        "name": "Rocks_Diffuse",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 1115032
+  },
+  {
+    "id": "axe",
+    "pack": "Q12",
+    "stem": "Axe_Bronze",
+    "height": 0.95,
+    "category": "items",
+    "format": "gltf",
+    "source_member": "Exports/glTF/Axe_Bronze.gltf",
+    "source_size_m": [
+      0.2945,
+      0.046,
+      0.8269
+    ],
+    "scale": 1.148833,
+    "mesh_count": 1,
+    "triangles": 826,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [
+      {
+        "name": "T_Trim_Props_BaseColor",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_Trim_Props_Normal",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_Trim_Props_ORM",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 3467328
+  },
+  {
+    "id": "pickaxe",
+    "pack": "Q12",
+    "stem": "Pickaxe_Bronze",
+    "height": 1.0,
+    "category": "items",
+    "format": "gltf",
+    "source_member": "Exports/glTF/Pickaxe_Bronze.gltf",
+    "source_size_m": [
+      0.8129,
+      0.1357,
+      1.1976
+    ],
+    "scale": 0.834988,
+    "mesh_count": 1,
+    "triangles": 776,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [
+      {
+        "name": "T_Trim_Props_BaseColor",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_Trim_Props_Normal",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_Trim_Props_ORM",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 3466656
+  },
+  {
+    "id": "potion",
+    "pack": "Q03",
+    "stem": "Potion1_Filled",
+    "height": 0.24,
+    "category": "items",
+    "format": "fbx",
+    "source_member": "Ultimate RPG Items Pack - Aug 2019/FBX/Potion1_Filled.fbx",
+    "source_size_m": [
+      0.6685,
+      0.6685,
+      0.9629
+    ],
+    "scale": 0.249243,
+    "mesh_count": 1,
+    "triangles": 1470,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 36452
+  },
+  {
+    "id": "cart",
+    "pack": "Q05",
+    "stem": "Cart",
+    "height": 1.4,
+    "category": "props",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Cart.fbx",
+    "source_size_m": [
+      0.462,
+      0.9274,
+      0.7961
+    ],
+    "scale": 1.75867,
+    "mesh_count": 1,
+    "triangles": 2660,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 106940
+  },
+  {
+    "id": "grass",
+    "pack": "Q08",
+    "stem": "Grass_4",
+    "height": 0.3,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Nature Crops Pack - Jan 2020/FBX/Grass_4.fbx",
+    "source_size_m": [
+      0.3738,
+      0.3272,
+      1.0128
+    ],
+    "scale": 0.296214,
+    "mesh_count": 1,
+    "triangles": 192,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 12092
+  },
+  {
+    "id": "paver",
+    "pack": "Q05",
+    "stem": "Path_Square",
+    "height": 0.08,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Path_Square.fbx",
+    "source_size_m": [
+      0.4856,
+      0.4773,
+      0.0491
+    ],
+    "scale": 1.62923,
+    "mesh_count": 1,
+    "triangles": 240,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 19144
+  }
+]

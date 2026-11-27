@@ -1,0 +1,4 @@
+.godot/
+assets/*.png
+assets/*.png.import
+*.import
