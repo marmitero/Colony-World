@@ -8,6 +8,13 @@ $ownProcess = $null
 
 function Find-Godot {
     if ($env:GODOT_EXE -and (Test-Path -LiteralPath $env:GODOT_EXE -PathType Leaf)) { return (Resolve-Path -LiteralPath $env:GODOT_EXE).Path }
+    # Explicit local filenames also support renamed executables.
+    foreach ($dir in @((Join-Path $root "tools\godot"), $root)) {
+        foreach ($name in @("GODOT_EXE.exe", "godot.exe", "godot4.exe")) {
+            $candidate = Join-Path $dir $name
+            if (Test-Path -LiteralPath $candidate -PathType Leaf) { return (Resolve-Path -LiteralPath $candidate).Path }
+        }
+    }
     foreach ($name in @("godot.exe", "godot4.exe")) {
         $cmd = Get-Command $name -ErrorAction SilentlyContinue
         if ($cmd) { return $cmd.Source }
@@ -19,7 +26,7 @@ function Find-Godot {
             if ($exe) { return $exe.FullName }
         }
     }
-    throw "Godot 4.7.2 nao encontrado. Baixe em https://godotengine.org/download/windows/ e coloque o EXE na raiz, em tools\godot ou defina GODOT_EXE."
+    throw "Godot 4.7.2 nao encontrado. Baixe em https://godotengine.org/download/windows/ e coloque o executavel como tools\godot\GODOT_EXE.exe, mantenha o nome original do Godot ou defina a variavel de ambiente GODOT_EXE."
 }
 function Get-Health {
     try {
@@ -29,6 +36,7 @@ function Get-Health {
 }
 try {
     $godot = Find-Godot
+    Write-Host "Godot encontrado: $godot"
     $version = & $godot --version
     if ($version -and "$version" -notmatch "^4\.7\.2") {
         throw "Godot 4.7.2 esperado. Detectado: $version"
