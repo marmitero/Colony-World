@@ -25,6 +25,8 @@ jobs:
       - run: go build -buildvcs=false ./cmd/colony
       - if: runner.os == 'Linux'
         run: python3 ../tests/check_bravamar.py
+      - if: runner.os == 'Linux'
+        run: python3 ../tests/check_movement_data.py
       - if: runner.os == 'Windows'
         shell: pwsh
         run: |
@@ -56,5 +58,6 @@ jobs:
       - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f migrations/001_foundation.sql
       - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f migrations/002_local_auth.sql
       - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f migrations/003_character_profiles.sql
+      - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f migrations/004_avatar_appearance.sql
       - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f tests/check_schema.sql
       - run: psql -h 127.0.0.1 -U test -d colony_test -v ON_ERROR_STOP=1 -f tests/check_characters_schema.sql

@@ -9,6 +9,13 @@ var slot_buttons:Array[Button]=[]
 var name_field:LineEdit
 var body_choice:OptionButton
 var outfit_choice:OptionButton
+var face_choice:OptionButton
+var skin_choice:OptionButton
+var hair_choice:OptionButton
+var hair_color_choice:OptionButton
+var editing:=false
+var edit_button:Button
+var cancel_edit:Button
 var form:VBoxContainer
 var details:VBoxContainer
 var heading:Label
@@ -80,9 +87,13 @@ func setup(parent:Control)->void:
 	style.content_margin_bottom=14
 	right.add_theme_stylebox_override("panel",style)
 	row.add_child(right)
+	var scroll:=ScrollContainer.new()
+	scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	right.add_child(scroll)
 	var list:=VBoxContainer.new()
+	list.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	list.add_theme_constant_override("separation",5)
-	right.add_child(list)
+	scroll.add_child(list)
 	heading=app.label("Seus personagens",24)
 	list.add_child(heading)
 	for i in range(5):
@@ -101,17 +112,31 @@ func setup(parent:Control)->void:
 	body_choice=OptionButton.new()
 	body_choice.add_item("Corpo • Padrão")
 	body_choice.add_item("Corpo • Robusto")
-	form.add_child(body_choice)
+	var grid:=GridContainer.new()
+	grid.columns=2
+	grid.add_theme_constant_override("h_separation",6)
+	grid.add_theme_constant_override("v_separation",4)
+	form.add_child(grid)
+	grid.add_child(body_choice)
 	outfit_choice=OptionButton.new()
 	outfit_choice.add_item("Paleta • Terra")
 	outfit_choice.add_item("Paleta • Floresta")
 	outfit_choice.add_item("Paleta • Oceano")
-	form.add_child(outfit_choice)
+	grid.add_child(outfit_choice)
+	face_choice=option(["Rosto • Oval","Rosto • Angular"],grid)
+	skin_choice=option(["Pele • Natural","Pele • Quente","Pele • Profunda"],grid)
+	hair_choice=option(["Cabelo • Clássico","Cabelo • Curto","Cabelo • Lateral"],grid)
+	hair_color_choice=option(["Cor • Castanho","Cor • Preto","Cor • Cobre"],grid)
+	hair_choice.select(1)
+	hair_color_choice.disabled=false
 	body_choice.item_selected.connect(func(_x):refresh_preview())
 	outfit_choice.item_selected.connect(func(_x):refresh_preview())
 	create_button=app.button("Criar personagem",true)
 	create_button.pressed.connect(create_character)
 	form.add_child(create_button)
+	cancel_edit=app.button("Cancelar edição")
+	cancel_edit.pressed.connect(func():editing=false;refresh())
+	form.add_child(cancel_edit)
 	details=VBoxContainer.new()
 	details.add_theme_constant_override("separation",4)
 	list.add_child(details)
@@ -121,9 +146,12 @@ func setup(parent:Control)->void:
 	choose=app.button("Selecionar personagem",true)
 	choose.pressed.connect(func():change("select"))
 	details.add_child(choose)
-	enter_world=app.button("Visitar Bravamar",true)
+	enter_world=app.button("Entrar em Bravamar",true)
 	enter_world.pressed.connect(func():app.open_world_preview(slots[focus_slot-1]))
 	details.add_child(enter_world)
+	edit_button=app.button("Personalizar aparência")
+	edit_button.pressed.connect(begin_edit)
+	details.add_child(edit_button)
 	delete_button=app.button("Solicitar exclusão")
 	delete_button.pressed.connect(func():delete_dialog.popup_centered())
 	details.add_child(delete_button)
@@ -141,17 +169,37 @@ func setup(parent:Control)->void:
 	add_child(delete_dialog)
 	refresh()
 
+func option(values:Array,grid:GridContainer)->OptionButton:
+	var o:=OptionButton.new()
+	for v in values:o.add_item(v)
+	o.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	grid.add_child(o)
+	o.item_selected.connect(func(_x):refresh_preview())
+	return o
 func appearance()->Dictionary:
-	return {"body":["standard","sturdy"][body_choice.selected],"outfit":["earth","forest","ocean"][outfit_choice.selected]}
+	return {"body":["standard","sturdy"][body_choice.selected],"outfit":["earth","forest","ocean"][outfit_choice.selected],"face":["oval","angular"][face_choice.selected],"skin":["natural","warm","deep"][skin_choice.selected],"hair":["classic","short","swept"][hair_choice.selected],"hair_color":["brown","black","copper"][hair_color_choice.selected]}
+func begin_edit()->void:
+	var a:Dictionary=slots[focus_slot-1].get("appearance",{})
+	editing=true
+	body_choice.select(maxi(0,["standard","sturdy"].find(a.get("body"))))
+	outfit_choice.select(maxi(0,["earth","forest","ocean"].find(a.get("outfit"))))
+	face_choice.select(maxi(0,["oval","angular"].find(a.get("face"))))
+	skin_choice.select(maxi(0,["natural","warm","deep"].find(a.get("skin"))))
+	hair_choice.select(maxi(0,["classic","short","swept"].find(a.get("hair"))))
+	hair_color_choice.select(maxi(0,["brown","black","copper"].find(a.get("hair_color"))))
+	refresh()
 func refresh_preview()->void:
-	if is_instance_valid(hall):hall.render_roster(slots,focus_slot,appearance())
+	if is_instance_valid(hair_color_choice):hair_color_choice.disabled=hair_choice.selected==0
+	if is_instance_valid(hall):hall.render_roster(slots,focus_slot,appearance() if editing or slots[focus_slot-1]==null else {})
 func focus(slot:int)->void:
 	if app.pending!="":return
 	focus_slot=slot
+	editing=false
 	name_field.clear()
 	feedback.text=""
 	refresh()
 func set_roster(data:Dictionary,kind:String)->void:
+	if kind=="char_appearance":editing=false
 	slots=data.get("slots",[null,null,null,null,null])
 	selected_id=String(data.get("selected_id",""))
 	if kind=="characters":
@@ -160,6 +208,7 @@ func set_roster(data:Dictionary,kind:String)->void:
 	refresh()
 	match kind:
 		"char_create":feedback.text="Personagem criado! Selecione para continuar."
+		"char_appearance":feedback.text="Aparência atualizada."
 		"char_select":feedback.text="Personagem escolhido. Visite Bravamar para conhecer a vila."
 		"char_delete":feedback.text="Exclusão agendada; você pode cancelar."
 		"char_cancel_delete":feedback.text="Exclusão cancelada."
@@ -173,12 +222,16 @@ func refresh()->void:
 			elif c.get("id")==selected_id:suffix=" • Selecionado"
 		slot_buttons[i].text="%02d  %s%s%s"%[i+1,"▸ " if focus_slot==i+1 else "",c.get("name")+"  ·  Nv. 1" if c is Dictionary else "Vazio",suffix]
 	var active:Variant=slots[focus_slot-1]
-	form.visible=active==null
-	details.visible=active is Dictionary
+	form.visible=active==null or editing
+	name_field.visible=not editing
+	cancel_edit.visible=editing
+	create_button.text="Salvar aparência" if editing else "Criar personagem"
+	details.visible=active is Dictionary and not editing
 	if active is Dictionary:
 		var pending:bool=active.has("delete_at")
 		info.text="%s  •  Nível %d  •  %s\nKit inicial: picareta, machado, espada e 2 poções."%[active.get("name"),active.get("level"),active.get("city")]
 		if pending:info.text+="\nExclusão: "+String(active.get("delete_at"))
+		edit_button.visible=not pending
 		choose.visible=not pending and active.get("id")!=selected_id
 		enter_world.visible=not pending and active.get("id")==selected_id
 		delete_button.visible=not pending
@@ -186,7 +239,10 @@ func refresh()->void:
 	refresh_preview()
 func create_character()->void:
 	if app.pending!="":return
-	app.request("char_create","/v1/characters",HTTPClient.METHOD_POST,JSON.stringify({"slot":focus_slot,"name":name_field.text.strip_edges(),"appearance":appearance()}))
+	if editing:
+		app.request("char_appearance","/v1/characters/"+String(slots[focus_slot-1].get("id"))+"/appearance",HTTPClient.METHOD_POST,JSON.stringify(appearance()))
+	else:
+		app.request("char_create","/v1/characters",HTTPClient.METHOD_POST,JSON.stringify({"slot":focus_slot,"name":name_field.text.strip_edges(),"appearance":appearance()}))
 func change(action:String)->void:
 	if app.pending!="" or not slots[focus_slot-1] is Dictionary:return
 	app.request("char_"+action,"/v1/characters/"+String(slots[focus_slot-1].get("id"))+"/"+action,HTTPClient.METHOD_POST)

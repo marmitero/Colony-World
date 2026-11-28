@@ -31,7 +31,7 @@ func TestAPILifecycle(t *testing.T) {
 	}
 	w := call("GET", "/healthz", "", "", 200)
 	var health Health
-	if json.Unmarshal(w.Body.Bytes(), &health) != nil || health.Database != "local_file" || health.Phase != "P0.4" {
+	if json.Unmarshal(w.Body.Bytes(), &health) != nil || health.Database != "local_file" || health.Phase != "P0.5" {
 		t.Fatal(w.Body.String())
 	}
 	call("GET", "/v1/hello", "", "", 200)
@@ -57,4 +57,46 @@ func TestAPILifecycle(t *testing.T) {
 	if w.Code != 403 {
 		t.Fatal(w.Code)
 	}
+}
+
+func TestWorldRequiresSelectedCharacter(t *testing.T) {
+	s, e := auth.Open(t.TempDir())
+	if e != nil {
+		t.Fatal(e)
+	}
+	h := NewHandler(s)
+	call := func(method, path, body, token string, status int) *httptest.ResponseRecorder {
+		t.Helper()
+		r := httptest.NewRequest(method, path, strings.NewReader(body))
+		r.Header.Set("Content-Type", "application/json")
+		if token != "" {
+			r.Header.Set("Authorization", "Bearer "+token)
+		}
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+		if w.Code != status {
+			t.Fatalf("%s %d %s", path, w.Code, w.Body.String())
+		}
+		return w
+	}
+	call("GET", "/v1/world/state", "", "", 401)
+	cred := `{"email":"world@example.test","password":"fixture-only-1234"}`
+	call("POST", "/v1/auth/register", cred, "", 201)
+	w := call("POST", "/v1/auth/login", cred, "", 200)
+	var login auth.Login
+	if json.Unmarshal(w.Body.Bytes(), &login) != nil {
+		t.Fatal("login")
+	}
+	call("GET", "/v1/world/state", "", login.Token, 404)
+	w = call("POST", "/v1/characters", `{"slot":1,"name":"WorldFixture","appearance":{"body":"standard","outfit":"earth","face":"oval","skin":"natural","hair":"short","hair_color":"brown"}}`, login.Token, 201)
+	var roster auth.Roster
+	if json.Unmarshal(w.Body.Bytes(), &roster) != nil || roster.Slots[0] == nil {
+		t.Fatal("create")
+	}
+	id := roster.Slots[0].ID
+	call("POST", "/v1/characters/"+id+"/select", "", login.Token, 200)
+	call("GET", "/v1/world/state", "", login.Token, 200)
+	call("POST", "/v1/world/move", `{"dx":0,"dz":-1,"run":false}`, login.Token, 200)
+	call("POST", "/v1/world/move", `{"dx":2,"dz":0,"run":false}`, login.Token, 400)
+	call("POST", "/v1/characters/"+id+"/appearance", `{"body":"sturdy","outfit":"ocean","face":"angular","skin":"deep","hair":"swept","hair_color":"copper"}`, login.Token, 200)
 }

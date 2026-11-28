@@ -1,10 +1,15 @@
 extends Node3D
-## P0.4 world scene, data-driven original art layout. No gameplay interactions.
+## P0.5 Bravamar, movement and collision; combat and NPC interaction pending.
+const Player=preload("res://world/player.gd")
+var player:CharacterBody3D
+var state:Dictionary={}
+var session_token:String=""
+var collision_count:=0
 var layout:Dictionary
 var camera:Camera3D
 var focus:=Vector3(0,0,0)
 var azimuth:=25.0
-var zoom:=75.0
+var zoom:=20.0
 var boats:Array[Node3D]=[]
 var markers:Array[Label3D]=[]
 var anchors:Dictionary={}
@@ -58,29 +63,40 @@ func _ready()->void:
 		add_marker("↗ "+e["label"]+" · "+e["level"],Vector3(e["x"],2.6,e["z"]),Color("#d4e8b4"),32)
 	add_marker("ARENA  ·  PvP futuro",Vector3(0,2.8,-1),Color("#ffd0a1"),34)
 	add_marker("Porto de Bravamar",Vector3(7,2.2,25),Color("#e1d7bd"),30)
-	if not selected.is_empty():
-		var a:=place({"asset":"avatar","x":0,"z":13.8,"y":0,"rotation":180,"scale":1,"kind":"npc"})
-		var appearance:Dictionary=selected.get("appearance",{})
-		if appearance.get("body")=="sturdy":a.scale=Vector3(1.12,1,1.12)
-		if DisplayServer.get_name()!="headless":
-			var tint:=Color.WHITE
-			if appearance.get("outfit")=="forest":tint=Color("#9ac0a0")
-			elif appearance.get("outfit")=="ocean":tint=Color("#9cbce0")
-			for mesh in a.find_children("*","MeshInstance3D",true,false):
-				var mi:=mesh as MeshInstance3D
-				for j in range(mi.mesh.get_surface_count()):
-					var original=mi.get_active_material(j)
-					if original is StandardMaterial3D:
-						var mat:=original.duplicate() as StandardMaterial3D
-						mat.albedo_color*=tint
-						mi.set_surface_override_material(j,mat)
-		add_marker(String(selected.get("name","Viajante")),a.position+Vector3(0,2.4,0),Color("#d1f9d5"),28)
+	var geo:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://world/collision.json"))
+	for box in geo["boxes"]:
+		var body:=StaticBody3D.new()
+		body.collision_layer=1
+		body.collision_mask=0
+		body.position=Vector3(box["x"],0,box["z"])
+		body.rotation_degrees.y=box["rot"]
+		var shape:=CollisionShape3D.new()
+		var mesh:=BoxShape3D.new()
+		mesh.size=Vector3(float(box["hx"])*2,maxf(.5,float(box["height"])),float(box["hz"])*2)
+		shape.shape=mesh
+		shape.position.y=mesh.size.y*.5
+		body.add_child(shape)
+		add_child(body)
+		collision_count+=1
+	if not selected.is_empty() and not state.is_empty():
+		player=Player.new()
+		add_child(player)
+		player.setup(self,selected,state,session_token)
+		var mark:=Label3D.new()
+		mark.text=String(selected.get("name","Viajante"))
+		mark.font_size=32
+		mark.pixel_size=.009
+		mark.modulate=Color("#d1f9d5")
+		mark.billboard=BaseMaterial3D.BILLBOARD_ENABLED
+		mark.position=Vector3(0,2.15,0)
+		player.add_child(mark)
+		focus=player.position
 	camera=Camera3D.new()
 	camera.projection=Camera3D.PROJECTION_ORTHOGONAL
 	camera.current=true
 	add_child(camera)
 	update_camera()
-	print("CW_P04_WORLD_READY placements=",instances," npc=",anchors.size()," exits=",layout["exits"].size())
+	print("CW_P05_WORLD_READY placements=",instances," npc=",anchors.size()," exits=",layout["exits"].size())
 
 func make_surface(data:Dictionary)->void:
 	var st:=SurfaceTool.new()
@@ -144,7 +160,7 @@ func add_marker(text:String,pos:Vector3,color:Color,font:int)->void:
 
 func update_camera()->void:
 	var r:=deg_to_rad(azimuth)
-	camera.position=focus+Vector3(sin(r)*60,70,cos(r)*60)
+	camera.position=focus+Vector3(sin(r)*23,28,cos(r)*23)
 	camera.look_at(focus)
 	camera.size=zoom
 func set_focus(pos:Vector3,size_:float)->void:
@@ -159,23 +175,24 @@ func _process(delta:float)->void:
 			boats[i].position.y=-.12+sin(elapsed*.8+i)*.08
 			boats[i].rotation.z=sin(elapsed*.7+i)*.025
 	if not enabled:return
-	var direction:=Vector2.ZERO
-	if Input.is_physical_key_pressed(KEY_W):direction.y-=1
-	if Input.is_physical_key_pressed(KEY_S):direction.y+=1
-	if Input.is_physical_key_pressed(KEY_A):direction.x-=1
-	if Input.is_physical_key_pressed(KEY_D):direction.x+=1
-	if direction!=Vector2.ZERO:
-		var r:=deg_to_rad(azimuth)
-		var movement:=Vector3(direction.x,0,direction.y).rotated(Vector3.UP,r)
-		focus+=movement.normalized()*delta*18
-		focus.x=clampf(focus.x,-46,46)
-		focus.z=clampf(focus.z,-33,34)
+	if is_instance_valid(player):
+		focus=focus.lerp(player.position,minf(delta*9,1))
 		update_camera()
 func _input(event:InputEvent)->void:
 	if not enabled:return
 	if event is InputEventMouseButton and event.pressed:
-		if event.button_index==MOUSE_BUTTON_WHEEL_UP:zoom=maxf(12,zoom-5)
-		elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN:zoom=minf(80,zoom+5)
+		if event.button_index==MOUSE_BUTTON_WHEEL_UP:zoom=maxf(12,zoom-2)
+		elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN:zoom=minf(35,zoom+2)
+		elif event.button_index==MOUSE_BUTTON_LEFT and is_instance_valid(player):
+			var area:=get_viewport().get_visible_rect().size
+			if event.position.y>100 and event.position.y<area.y-110:
+				var ray:=camera.project_ray_origin(event.position)
+				var dir:=camera.project_ray_normal(event.position)
+				if absf(dir.y)>.001:
+					var t:=-ray.y/dir.y
+					var point:=ray+dir*t
+					var dest:=Vector2(point.x,point.z)
+					if t>0 and player.walkable(dest):player.target=dest
 		update_camera()
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode==KEY_Q:azimuth-=15

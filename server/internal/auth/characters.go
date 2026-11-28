@@ -21,8 +21,12 @@ var ErrDeletionPending = errors.New("character pending deletion")
 const DeleteDelay = 72 * time.Hour
 
 type Appearance struct {
-	Body   string `json:"body"`
-	Outfit string `json:"outfit"`
+	Body      string `json:"body"`
+	Outfit    string `json:"outfit"`
+	Face      string `json:"face,omitempty"`
+	Skin      string `json:"skin,omitempty"`
+	Hair      string `json:"hair,omitempty"`
+	HairColor string `json:"hair_color,omitempty"`
 }
 type ItemStack struct {
 	ItemID   string `json:"item_id"`
@@ -55,7 +59,15 @@ type charDisk struct {
 }
 
 func validAppearance(a Appearance) bool {
-	return (a.Body == "standard" || a.Body == "sturdy") && (a.Outfit == "earth" || a.Outfit == "forest" || a.Outfit == "ocean")
+	return (a.Body == "standard" || a.Body == "sturdy") && (a.Outfit == "earth" || a.Outfit == "forest" || a.Outfit == "ocean") && oneOf(a.Face, "", "oval", "angular") && oneOf(a.Skin, "", "natural", "warm", "deep") && oneOf(a.Hair, "", "classic", "short", "swept") && oneOf(a.HairColor, "", "brown", "black", "copper")
+}
+func oneOf(v string, allowed ...string) bool {
+	for _, a := range allowed {
+		if v == a {
+			return true
+		}
+	}
+	return false
 }
 func validName(n string) bool {
 	if n != strings.TrimSpace(n) || utf8.RuneCountInString(n) < 3 || utf8.RuneCountInString(n) > 20 {
@@ -260,6 +272,57 @@ func (s *Service) ChangeCharacter(token, id, action string) (Roster, error) {
 			return Roster{}, e
 		}
 		return r, nil
+	}
+	return Roster{}, ErrCharacterMissing
+}
+
+func (s *Service) Selected(token string) (Character, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	a, e := s.meLocked(token)
+	if e != nil {
+		return Character{}, e
+	}
+	if e = s.expireRosters(); e != nil {
+		return Character{}, e
+	}
+	r := s.characters[a.ID]
+	for _, c := range r.Slots {
+		if c != nil && c.ID == r.SelectedID && c.DeleteAt == nil {
+			return *c, nil
+		}
+	}
+	return Character{}, ErrCharacterMissing
+}
+func (s *Service) UpdateAppearance(token, id string, a Appearance) (Roster, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	account, e := s.meLocked(token)
+	if e != nil {
+		return Roster{}, e
+	}
+	if !validAppearance(a) {
+		return Roster{}, ErrCharacterInvalid
+	}
+	if e = s.expireRosters(); e != nil {
+		return Roster{}, e
+	}
+	r := s.characters[account.ID]
+	for i, c := range r.Slots {
+		if c != nil && c.ID == id {
+			if c.DeleteAt != nil {
+				return Roster{}, ErrDeletionPending
+			}
+			v := *c
+			v.Appearance = a
+			r.Slots[i] = &v
+			m := s.copyRosters()
+			m[account.ID] = r
+			if e = s.writeRosters(m); e != nil {
+				return Roster{}, e
+			}
+			return r, nil
+		}
 	}
 	return Roster{}, ErrCharacterMissing
 }

@@ -2,6 +2,7 @@ package transport
 
 import (
 	"colony.world/server/internal/auth"
+	"colony.world/server/internal/world"
 	"encoding/json"
 	"errors"
 	"io"
@@ -10,7 +11,7 @@ import (
 )
 
 const ProtocolVersion = 1
-const Phase = "P0.4"
+const Phase = "P0.5"
 
 type Health struct {
 	Service         string `json:"service"`
@@ -26,11 +27,12 @@ type credentials struct {
 
 func NewHandler(s *auth.Service) http.Handler {
 	mux := http.NewServeMux()
+	movement := world.New()
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		write(w, 200, Health{"colony-world", "ok", Phase, ProtocolVersion, "local_file"})
 	})
 	mux.HandleFunc("GET /v1/hello", func(w http.ResponseWriter, r *http.Request) {
-		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "world_preview", "gameplay": false})
+		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "movement", "gameplay": true})
 	})
 	mux.HandleFunc("POST /v1/auth/register", func(w http.ResponseWriter, r *http.Request) {
 		var c credentials
@@ -98,6 +100,43 @@ func NewHandler(s *auth.Service) http.Handler {
 			write(w, 200, roster)
 		})
 	}
+	mux.HandleFunc("POST /v1/characters/{id}/appearance", func(w http.ResponseWriter, r *http.Request) {
+		var input auth.Appearance
+		if !decode(w, r, &input) {
+			return
+		}
+		roster, e := s.UpdateAppearance(bearer(r), r.PathValue("id"), input)
+		if e != nil {
+			authError(w, e)
+			return
+		}
+		write(w, 200, roster)
+	})
+	mux.HandleFunc("GET /v1/world/state", func(w http.ResponseWriter, r *http.Request) {
+		c, e := s.Selected(bearer(r))
+		if e != nil {
+			authError(w, e)
+			return
+		}
+		write(w, 200, movement.State(c.ID))
+	})
+	mux.HandleFunc("POST /v1/world/move", func(w http.ResponseWriter, r *http.Request) {
+		c, e := s.Selected(bearer(r))
+		if e != nil {
+			authError(w, e)
+			return
+		}
+		var input world.Input
+		if !decode(w, r, &input) {
+			return
+		}
+		pos, e := movement.Move(c.ID, input)
+		if e != nil {
+			write(w, 400, map[string]string{"error": "invalid_movement"})
+			return
+		}
+		write(w, 200, pos)
+	})
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Cache-Control", "no-store")

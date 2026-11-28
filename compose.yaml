@@ -12,6 +12,7 @@ services:
       - ./migrations/001_foundation.sql:/docker-entrypoint-initdb.d/001_foundation.sql:ro
       - ./migrations/002_local_auth.sql:/docker-entrypoint-initdb.d/002_local_auth.sql:ro
       - ./migrations/003_character_profiles.sql:/docker-entrypoint-initdb.d/003_character_profiles.sql:ro
+      - ./migrations/004_avatar_appearance.sql:/docker-entrypoint-initdb.d/004_avatar_appearance.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U colony_dev -d colony_world"]
       interval: 5s

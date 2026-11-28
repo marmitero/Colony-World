@@ -1,5 +1,5 @@
 extends Node3D
-const AVATAR=preload("res://menu_assets/avatar.glb")
+const AvatarVisual=preload("res://avatar_visual.gd")
 const COLUMN=preload("res://menu_assets/column.glb")
 const ARCH=preload("res://menu_assets/arch.glb")
 const BANNER=preload("res://menu_assets/banner.glb")
@@ -90,33 +90,14 @@ func render_roster(slots:Array,focus:int,preview:Dictionary={}) -> void:
 			actors[i].queue_free()
 			actors[i]=null
 		var data:Variant=slots[i] if i<slots.size() else null
-		if i+1==focus and data==null and not preview.is_empty():
+		if i+1==focus and not preview.is_empty():
 			data={"appearance":preview}
 		if data is Dictionary:
-			var a:=place(AVATAR,positions[i]+Vector3(0,.35,0))
+			var a:=AvatarVisual.create(data.get("appearance",{}))
+			add_child(a)
+			a.position=positions[i]+Vector3(0,.35,0)
 			actors[i]=a
-			var appearance:Dictionary=data.get("appearance",{})
-			a.scale=Vector3(1.12,1.0,1.12) if appearance.get("body")=="sturdy" else Vector3.ONE
-			# Palette tint preserves the original texture and geometry.
-			var tint:=Color.WHITE
-			match appearance.get("outfit","earth"):
-				"forest":tint=Color("#9ac0a0")
-				"ocean":tint=Color("#9cbce0")
-			for mesh in a.find_children("*","MeshInstance3D",true,false) if DisplayServer.get_name()!="headless" else []:
-				var mi:=mesh as MeshInstance3D
-				for j in range(mi.mesh.get_surface_count()):
-					var original=mi.get_active_material(j)
-					if original is StandardMaterial3D:
-						var material:=original.duplicate() as StandardMaterial3D
-						material.albedo_color*=tint
-						mi.set_surface_override_material(j,material)
-			for player in a.find_children("*","AnimationPlayer",true,false):
-				var ap:=player as AnimationPlayer
-				for clip in ap.get_animation_list():
-					if String(clip).to_lower().ends_with("idle"):
-						ap.get_animation(clip).loop_mode=Animation.LOOP_LINEAR
-						ap.play(clip)
-						break
+			AvatarVisual.play(a,"Idle")
 		lights[i].light_energy=2.3 if i+1==focus else .25
 
 func _process(delta:float)->void:

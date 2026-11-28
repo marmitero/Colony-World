@@ -2,11 +2,15 @@ extends Control
 const Bravamar=preload("res://world/bravamar.gd")
 var village:Node3D
 var app:Control
-func setup(parent:Control,character:Dictionary)->void:
+var status:Label
+var zone_label:Label
+func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 	app=parent
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	village=Bravamar.new()
 	village.selected=character
+	village.state=state
+	village.session_token=app.session_token
 	village.animate=not app.reduced_motion
 	add_child(village)
 	var top:=MarginContainer.new()
@@ -32,7 +36,9 @@ func setup(parent:Control,character:Dictionary)->void:
 	titlebox.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	row.add_child(titlebox)
 	titlebox.add_child(app.label("BRAVAMAR  /  VILA INICIAL",22,Color("#ead2a3")))
-	titlebox.add_child(app.label("P0.4 • visita artística • zona segura fora da arena",13))
+	titlebox.add_child(app.label(String(character.get("name"))+"  •  Nível "+str(character.get("level"))+"  •  "+str(character.get("gold"))+" G",14))
+	zone_label=app.label("Zona segura",14,Color("#a8d89b"))
+	titlebox.add_child(zone_label)
 	var back:Button=app.button("Voltar aos personagens")
 	back.pressed.connect(app.close_world_preview)
 	row.add_child(back)
@@ -47,13 +53,20 @@ func setup(parent:Control,character:Dictionary)->void:
 	bottom.add_child(tools)
 	var box:=VBoxContainer.new()
 	tools.add_child(box)
-	box.add_child(app.label("WASD: mover câmera  •  Q/E: girar  •  Rodinha: zoom  •  Sem movimentação de avatar nesta etapa",14))
+	box.add_child(app.label("WASD / clique no chão: mover  •  Shift: correr  •  Q/E: girar câmera  •  Rodinha: zoom",14))
 	var buttons:=HBoxContainer.new()
 	box.add_child(buttons)
-	for entry in [["Visão geral",Vector3(0,0,0),75.0],["Praça",Vector3(0,0,-1),24.0],["Mercado",Vector3(-23,0,8),23.0],["Forja",Vector3(24,0,-11),23.0],["Porto",Vector3(10,0,24),24.0]]:
-		var button_:Button=app.button(entry[0])
-		button_.pressed.connect(func():village.set_focus(entry[1],entry[2]))
-		buttons.add_child(button_)
+	var recenter:Button=app.button("Centralizar câmera")
+	recenter.pressed.connect(func():village.azimuth=25;village.zoom=20;village.update_camera())
+	buttons.add_child(recenter)
+	status=app.label("Servidor conectado",14,Color("#a8d89b"))
+	buttons.add_child(status)
+	village.player.state_changed.connect(update_status)
+	village.player.session_lost.connect(app.close_world_preview)
 	var marker:Button=app.button("Rótulos")
 	marker.pressed.connect(village.toggle_markers)
 	buttons.add_child(marker)
+
+func update_status()->void:
+	zone_label.text="Arena • PvP aguardando implementação" if village.player.zone=="arena_future" else "Zona segura"
+	status.text="Servidor conectado" if village.player.online else "Conexão interrompida • volte ao salão"

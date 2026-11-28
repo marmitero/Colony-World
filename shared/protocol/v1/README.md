@@ -15,3 +15,7 @@ GET /v1/characters retorna {"slots":[null,... cinco posições],"selected_id":""
 ## P0.4 — world preview
 Health/hello phase P0.4, hello mode world_preview. No new gameplay commands. Bravamar is art-only client-side inspection after authenticated character selection. Port 3000 preserved. Server authoritative movement, combat and zone enforcement are future phases.
 
+
+## P0.5 — local movement
+Health/hello phase P0.5, hello mode=movement, gameplay=true (movement only). GET /v1/world/state requires an authenticated selected character. POST /v1/world/move accepts {dx,dz,run}; no position from client. Direction norm <=1.01; server time delta capped 0.16s, speed 4.5m/s walking or 6m/s running; shared 126 OBB collision footprints + shoreline and pier limits. State {x,z,zone,character_id}, session-selected ID only, position in process memory (not restart durable yet). POST /v1/characters/{id}/appearance accepts body/outfit/face/skin/hair/hair_color, verifies ownership and deletion status; updates only appearance. P0.3 missing fields are supported. Port 3000 retained.
+

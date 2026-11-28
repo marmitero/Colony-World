@@ -32,7 +32,7 @@ func TestCharactersLifecycle(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	appearance := Appearance{"standard", "earth"}
+	appearance := Appearance{Body: "standard", Outfit: "earth"}
 	r, e := s.Characters(l.Token)
 	if e != nil || r.Slots[0] != nil {
 		t.Fatal(r, e)
