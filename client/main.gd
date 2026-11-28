@@ -1,6 +1,9 @@
 extends Control
 const BASE := "http://127.0.0.1:3000"
 const Harbor = preload("res://harbor.gd")
+const Characters = preload("res://character_screen.gd")
+var character_screen: Control
+var login_margin: MarginContainer
 var harbor: Node3D
 var http: HTTPRequest
 var sound: AudioStreamPlayer
@@ -103,6 +106,7 @@ func build_ui() -> void:
 	veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(veil)
 	var margin := MarginContainer.new()
+	login_margin=margin
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	margin.add_theme_constant_override("margin_left",48)
 	margin.add_theme_constant_override("margin_right",48)
@@ -182,7 +186,9 @@ func build_ui() -> void:
 	account_label=label("",16,Color("#d8c9a2"))
 	account_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	signed_in.add_child(account_label)
-	signed_in.add_child(label("Seleção de personagens: próxima etapa P0.3.",14))
+	var open_chars:=button("Meus personagens",true)
+	open_chars.pressed.connect(func():request("characters","/v1/characters"))
+	signed_in.add_child(open_chars)
 	var exit_button:=button("Sair da conta")
 	exit_button.pressed.connect(logout)
 	signed_in.add_child(exit_button)
@@ -212,7 +218,7 @@ func build_ui() -> void:
 	var refresh:=button("Verificar servidor")
 	refresh.pressed.connect(func(): request("health","/healthz"))
 	settings_box.add_child(refresh)
-	overall.add_child(label("P0.2  •  Ambiente local de desenvolvimento  •  Contas de teste",13,Color("#e0ddcb")))
+	overall.add_child(label("P0.3  •  Ambiente local de desenvolvimento  •  Contas de teste",13,Color("#e0ddcb")))
 	update_mode()
 func set_volume(v: float) -> void:
 	sound.volume_db=linear_to_db(maxf(v,.0001))
@@ -272,12 +278,13 @@ func on_response(result: int,code: int,_headers: PackedStringArray,body: PackedB
 	if result==HTTPRequest.RESULT_SUCCESS and body.size()>0:
 		data=JSON.parse_string(body.get_string_from_utf8())
 	if kind=="health":
-		online=result==HTTPRequest.RESULT_SUCCESS and code==200 and data is Dictionary and data.get("service")=="colony-world" and data.get("phase")=="P0.2" and data.get("protocol_version")==1
+		online=result==HTTPRequest.RESULT_SUCCESS and code==200 and data is Dictionary and data.get("service")=="colony-world" and data.get("phase")=="P0.3" and data.get("protocol_version")==1
 		status_label.text="● SERVIDOR LOCAL" if online else "● SERVIDOR OFFLINE"
 		status_label.add_theme_color_override("font_color",Color("#a9d7a8") if online else Color("#e5a589"))
-		print("CW_P02_CONNECTED" if online else "CW_P02_OFFLINE")
+		print("CW_P03_CONNECTED" if online else "CW_P03_OFFLINE")
 		return
 	if kind=="logout":
+		close_character_screen()
 		session_token=""
 		auth_form.visible=true
 		signed_in.visible=false
@@ -301,7 +308,33 @@ func on_response(result: int,code: int,_headers: PackedStringArray,body: PackedB
 		subtitle.text="Você está autenticado no servidor local."
 		account_label.text=String(data["email"])
 		feedback.text=""
+		request("characters","/v1/characters")
 		return
+	if kind=="characters" or kind.begins_with("char_"):
+		if (code==200 or code==201) and data is Dictionary and data.has("slots"):
+			if not is_instance_valid(character_screen):
+				character_screen=Characters.new()
+				add_child(character_screen)
+				character_screen.setup(self)
+				login_margin.hide()
+				harbor.hide()
+				harbor.drift_enabled=false
+			character_screen.set_roster(data,kind)
+			return
+		if code==401:
+			close_character_screen()
+			session_token=""
+			auth_form.show()
+			signed_in.hide()
+			mode="login"
+			update_mode()
+			feedback.text="Sessão expirada. Entre novamente."
+			return
+		if is_instance_valid(character_screen):
+			var err_code:=String(data.get("error","")) if data is Dictionary else ""
+			var messages:={"invalid_character":"Nome inválido: 3–20 caracteres, comece por uma letra.","name_taken":"Nome já utilizado.","slot_occupied":"Slot ocupado.","deletion_pending":"Exclusão pendente.","character_missing":"Personagem indisponível."}
+			character_screen.feedback.text=messages.get(err_code,"Não foi possível concluir. Tente novamente.")
+			return
 	if kind=="me":session_token=""
 	var error_code:=String(data.get("error","")) if data is Dictionary else ""
 	match error_code:
@@ -312,3 +345,12 @@ func on_response(result: int,code: int,_headers: PackedStringArray,body: PackedB
 		_: feedback.text="Não foi possível concluir. Tente novamente."
 func logout() -> void:
 	request("logout","/v1/auth/logout",HTTPClient.METHOD_POST)
+
+
+func close_character_screen()->void:
+	if is_instance_valid(character_screen):
+		character_screen.queue_free()
+		character_screen=null
+	login_margin.show()
+	harbor.show()
+	harbor.drift_enabled=not reduced_motion

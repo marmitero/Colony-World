@@ -55,21 +55,25 @@ type Login struct {
 	ExpiresAt time.Time `json:"expires_at"`
 }
 type Service struct {
-	mu       sync.Mutex
-	path     string
-	accounts map[string]record
-	sessions map[[32]byte]session
-	attempts []time.Time
-	now      func() time.Time
+	mu         sync.Mutex
+	path       string
+	accounts   map[string]record
+	sessions   map[[32]byte]session
+	attempts   []time.Time
+	now        func() time.Time
+	characters map[string]Roster
 }
 
 func Open(dir string) (*Service, error) {
 	if err := os.MkdirAll(dir, 0700); err != nil {
 		return nil, err
 	}
-	s := &Service{path: filepath.Join(dir, "accounts-v1.json"), accounts: map[string]record{}, sessions: map[[32]byte]session{}, now: time.Now}
+	s := &Service{path: filepath.Join(dir, "accounts-v1.json"), accounts: map[string]record{}, sessions: map[[32]byte]session{}, now: time.Now, characters: map[string]Roster{}}
 	b, err := os.ReadFile(s.path)
 	if errors.Is(err, os.ErrNotExist) {
+		if _, charErr := os.Stat(s.charPath()); !errors.Is(charErr, os.ErrNotExist) {
+			return nil, errors.New("account store missing; preserve character store and restore accounts")
+		}
 		return s, nil
 	}
 	if err != nil {
@@ -87,6 +91,9 @@ func Open(dir string) (*Service, error) {
 		}
 	}
 	s.accounts = d.Accounts
+	if err := s.loadCharacters(); err != nil {
+		return nil, err
+	}
 	return s, nil
 }
 func normalize(email string) (string, bool) {
@@ -228,6 +235,9 @@ func (s *Service) Login(email, password string) (Login, error) {
 func (s *Service) Me(token string) (Account, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	return s.meLocked(token)
+}
+func (s *Service) meLocked(token string) (Account, error) {
 	k := sha256.Sum256([]byte(token))
 	v, ok := s.sessions[k]
 	now := s.now()

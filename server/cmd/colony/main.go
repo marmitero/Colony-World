@@ -22,7 +22,7 @@ func main() {
 	}
 	host, _, err := net.SplitHostPort(addr)
 	if err != nil || (host != "127.0.0.1" && host != "localhost" && host != "::1") {
-		log.Fatal("P0.2 only supports loopback CW_ADDR")
+		log.Fatal("P0.3 only supports loopback CW_ADDR")
 	}
 	dir := os.Getenv("CW_DATA_DIR")
 	if dir == "" {

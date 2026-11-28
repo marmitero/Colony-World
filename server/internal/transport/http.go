@@ -10,7 +10,7 @@ import (
 )
 
 const ProtocolVersion = 1
-const Phase = "P0.2"
+const Phase = "P0.3"
 
 type Health struct {
 	Service         string `json:"service"`
@@ -30,7 +30,7 @@ func NewHandler(s *auth.Service) http.Handler {
 		write(w, 200, Health{"colony-world", "ok", Phase, ProtocolVersion, "local_file"})
 	})
 	mux.HandleFunc("GET /v1/hello", func(w http.ResponseWriter, r *http.Request) {
-		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "authentication", "gameplay": false})
+		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "character_selection", "gameplay": false})
 	})
 	mux.HandleFunc("POST /v1/auth/register", func(w http.ResponseWriter, r *http.Request) {
 		var c credentials
@@ -68,6 +68,36 @@ func NewHandler(s *auth.Service) http.Handler {
 		s.Logout(bearer(r))
 		w.WriteHeader(204)
 	})
+	mux.HandleFunc("GET /v1/characters", func(w http.ResponseWriter, r *http.Request) {
+		roster, e := s.Characters(bearer(r))
+		if e != nil {
+			authError(w, e)
+			return
+		}
+		write(w, 200, roster)
+	})
+	mux.HandleFunc("POST /v1/characters", func(w http.ResponseWriter, r *http.Request) {
+		var input auth.CharacterInput
+		if !decode(w, r, &input) {
+			return
+		}
+		roster, e := s.CreateCharacter(bearer(r), input)
+		if e != nil {
+			authError(w, e)
+			return
+		}
+		write(w, 201, roster)
+	})
+	for _, action := range []string{"select", "delete", "cancel_delete"} {
+		mux.HandleFunc("POST /v1/characters/{id}/"+action, func(w http.ResponseWriter, r *http.Request) {
+			roster, e := s.ChangeCharacter(bearer(r), r.PathValue("id"), action)
+			if e != nil {
+				authError(w, e)
+				return
+			}
+			write(w, 200, roster)
+		})
+	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Cache-Control", "no-store")
@@ -109,6 +139,16 @@ func authError(w http.ResponseWriter, err error) {
 		status, code = 409, "account_unavailable"
 	case errors.Is(err, auth.ErrUnauthorized):
 		status, code = 401, "session_expired"
+	case errors.Is(err, auth.ErrCharacterInvalid):
+		status, code = 400, "invalid_character"
+	case errors.Is(err, auth.ErrSlotOccupied):
+		status, code = 409, "slot_occupied"
+	case errors.Is(err, auth.ErrNameTaken):
+		status, code = 409, "name_taken"
+	case errors.Is(err, auth.ErrCharacterMissing):
+		status, code = 404, "character_missing"
+	case errors.Is(err, auth.ErrDeletionPending):
+		status, code = 409, "deletion_pending"
 	case errors.Is(err, auth.ErrLimited):
 		status, code = 429, "rate_limited"
 	}

@@ -31,7 +31,7 @@ func TestAPILifecycle(t *testing.T) {
 	}
 	w := call("GET", "/healthz", "", "", 200)
 	var health Health
-	if json.Unmarshal(w.Body.Bytes(), &health) != nil || health.Database != "local_file" || health.Phase != "P0.2" {
+	if json.Unmarshal(w.Body.Bytes(), &health) != nil || health.Database != "local_file" || health.Phase != "P0.3" {
 		t.Fatal(w.Body.String())
 	}
 	call("GET", "/v1/hello", "", "", 200)

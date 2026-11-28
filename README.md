@@ -38,7 +38,7 @@ P0 iniciada após aprovação da P00.
 1. Baixe e extraia o repositório.
 2. Instale **Go 1.24+** uma vez e disponibilize **Godot 4.7.2** (executável na raiz, em tools/godot/GODOT_EXE.exe, no PATH ou variável GODOT_EXE).
 3. Dê duplo clique em `jogar.bat`. Ele compila e inicia o servidor local, importa o projeto Godot, abre o cliente e encerra apenas o servidor que iniciou ao fechar.
-4. Na P0.2, verá a tela inicial animada, cadastro e login local. PostgreSQL/Docker não são obrigatórios. A jogabilidade começa nas fases seguintes.
+4. Na P0.3, verá a tela inicial animada, cadastro/login e o salão de seleção de personagens. PostgreSQL/Docker não são obrigatórios. A jogabilidade começa nas fases seguintes.
 
 Não há downloads automáticos, scripts de instalação nem credenciais versionadas.
 
@@ -50,3 +50,8 @@ Não há downloads automáticos, scripts de instalação nem credenciais version
 Contas de teste persistentes em %LOCALAPPDATA%/ColonyWorld/dev; não usar credenciais reais. Sessão é local e termina no restart. P0.3 será seleção e criação de personagens.
 
 **Porta local:** 3000 (127.0.0.1). O launcher não encerra processos de terceiros que estejam usando a porta.
+
+## P0.3 — Criação e seleção de personagens
+
+P0.2 aprovada pelo usuário; P0.3 entregue para validação. [Relatório P0.3](docs/p0/P0.3.md). Os personagens são persistidos no mesmo diretório de dados local da conta. A entrada no mundo ainda não está implementada.
+
