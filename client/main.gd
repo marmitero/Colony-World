@@ -230,7 +230,7 @@ func build_ui() -> void:
 	var refresh:=button("Verificar servidor")
 	refresh.pressed.connect(func(): request("health","/healthz"))
 	settings_box.add_child(refresh)
-	overall.add_child(label("P0.5  •  Ambiente local de desenvolvimento  •  Contas de teste",13,Color("#e0ddcb")))
+	overall.add_child(label("P0.6  •  Ambiente local de desenvolvimento  •  Contas de teste",13,Color("#e0ddcb")))
 	update_mode()
 func set_volume(v: float) -> void:
 	sound.volume_db=linear_to_db(maxf(v,.0001))
@@ -290,10 +290,10 @@ func on_response(result: int,code: int,_headers: PackedStringArray,body: PackedB
 	if result==HTTPRequest.RESULT_SUCCESS and body.size()>0:
 		data=JSON.parse_string(body.get_string_from_utf8())
 	if kind=="health":
-		online=result==HTTPRequest.RESULT_SUCCESS and code==200 and data is Dictionary and data.get("service")=="colony-world" and data.get("phase")=="P0.5" and data.get("protocol_version")==1
+		online=result==HTTPRequest.RESULT_SUCCESS and code==200 and data is Dictionary and data.get("service")=="colony-world" and data.get("phase")=="P0.6" and data.get("protocol_version")==1
 		status_label.text="● SERVIDOR LOCAL" if online else "● SERVIDOR OFFLINE"
 		status_label.add_theme_color_override("font_color",Color("#a9d7a8") if online else Color("#e5a589"))
-		print("CW_P05_CONNECTED" if online else "CW_P05_OFFLINE")
+		print("CW_P06_CONNECTED" if online else "CW_P06_OFFLINE")
 		return
 	if kind=="logout":
 		close_character_screen()

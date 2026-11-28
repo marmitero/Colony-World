@@ -1,0 +1,134 @@
+[
+  {
+    "id": "maia",
+    "name": "Anciã Maia",
+    "role": "Missões principais",
+    "x": 0,
+    "z": -10.6,
+    "color": "#d9c59a",
+    "bio": "Guardiã das antigas rotas.",
+    "dialog": "Há muitos caminhos em Bravamar, viajante. Nenhum precisa começar com uma espada. Conheça as pessoas antes de decidir seu destino.",
+    "asset": "npc_cleric"
+  },
+  {
+    "id": "tovan",
+    "name": "Tovan",
+    "role": "Armas e reparos",
+    "x": 22,
+    "z": -9.3,
+    "color": "#ac8370",
+    "bio": "Ferreiro de família mineira.",
+    "dialog": "O aço começa nas mãos de quem minera. Eu trabalho madeira, minério e couro para fazer ferramentas, armas e estruturas. As oficinas e reparos serão habilitados na fase de produção.",
+    "asset": "npc_warrior"
+  },
+  {
+    "id": "elara",
+    "name": "Elara",
+    "role": "Armaduras",
+    "x": -16,
+    "z": 11.8,
+    "color": "#b9c6d9",
+    "bio": "Armeira e antiga escolta.",
+    "dialog": "Uma boa proteção não depende só de força. Couro, tecido e metal de qualidade mantêm aventureiros seguros. A venda de armaduras estará disponível quando o comércio for ativado.",
+    "asset": "npc_ranger"
+  },
+  {
+    "id": "nilo",
+    "name": "Nilo",
+    "role": "Poções",
+    "x": -15.5,
+    "z": 2.2,
+    "color": "#a7c2a5",
+    "bio": "Boticário e cozinheiro do cais.",
+    "dialog": "Ervas, frutas, água e carne têm valor. Preparadores fazem poções, refeições e bebidas; suas receitas ajudarão exploradores e trabalhadores. A produção será ativada depois.",
+    "asset": "npc_wizard"
+  },
+  {
+    "id": "lume",
+    "name": "Lume",
+    "role": "Decorações",
+    "x": -27,
+    "z": -5.6,
+    "color": "#ccb7d6",
+    "bio": "Artesã de móveis e tecidos.",
+    "dialog": "Uma casa conta a história de quem vive nela. Madeira, tecido e pedra viram móveis e decoração. Guarde ideias para sua futura residência.",
+    "asset": "npc_rogue"
+  },
+  {
+    "id": "iara",
+    "name": "Iara",
+    "role": "Guildas",
+    "x": 3,
+    "z": -17.7,
+    "color": "#d9b37c",
+    "bio": "Registradora das guildas.",
+    "dialog": "Ninguém precisa reconstruir estas terras sozinho. Guildas unem ofícios, organizam projetos e expedições. A criação de guilda será ativada em uma fase posterior.",
+    "asset": "npc_cleric"
+  },
+  {
+    "id": "oren",
+    "name": "Oren",
+    "role": "Mercado e contratos",
+    "x": -22,
+    "z": 5.1,
+    "color": "#d7bd83",
+    "bio": "Corretor das rotas comerciais.",
+    "dialog": "O valor de um recurso nasce do trabalho e da necessidade de alguém. Mercadores organizam trocas, encomendas e transporte. Mercado e contratos serão habilitados depois.",
+    "asset": "npc_rogue"
+  },
+  {
+    "id": "sela",
+    "name": "Sela",
+    "role": "Residência",
+    "x": 13,
+    "z": -15.4,
+    "color": "#b8a6c1",
+    "bio": "Guardiã do registro de terras.",
+    "dialog": "Cada viajante poderá ter um terreno vazio, cultivar e construir em seu próprio ritmo. Maia poderá registrar sua elegibilidade à escritura. O terreno será disponibilizado na fase de residência.",
+    "asset": "npc_cleric"
+  },
+  {
+    "id": "kael",
+    "name": "Kael",
+    "role": "Treinamento e arena",
+    "x": 8.5,
+    "z": -7.6,
+    "color": "#b77d75",
+    "bio": "Instrutor da antiga guarda.",
+    "dialog": "Aprenda com as criaturas pequenas antes de enfrentar as grandes. A arena central é delimitada; o restante da vila é seguro. O combate e as habilidades serão habilitados nas próximas etapas.",
+    "asset": "npc_warrior"
+  },
+  {
+    "id": "nara",
+    "name": "Nara",
+    "role": "Sementes",
+    "x": -35,
+    "z": -22.8,
+    "color": "#c7d79d",
+    "bio": "Agricultora das encostas.",
+    "dialog": "Sementes, água, ração e abrigo mantêm as colheitas e os animais. Fazendeiros abastecem preparadores e construtores. Os ciclos de produção virão com a fazenda.",
+    "asset": "npc_ranger"
+  },
+  {
+    "id": "dara",
+    "name": "Dara",
+    "role": "Coleta",
+    "x": 30,
+    "z": -13.6,
+    "color": "#8bb7a7",
+    "bio": "Coletora dos bosques e minas.",
+    "dialog": "Observe as árvores, pedras e veios de minério ao viajar. Cada ferramenta permite trabalhar recursos adequados ao seu nível. A coleta será liberada depois do Bosque do Orvalho.",
+    "asset": "avatar"
+  },
+  {
+    "id": "varo",
+    "name": "Varo",
+    "role": "Viagens",
+    "x": 32,
+    "z": 3.2,
+    "color": "#94b6d8",
+    "bio": "Cartógrafo do porto.",
+    "dialog": "Pelo oeste fica o Bosque do Orvalho, recomendado para níveis 1–5. Pelo leste, o Desfiladeiro Ferrugem, nível 10+. Descubra uma cidade a pé antes de poder viajar para ela; as rotas ainda estão em preparação.",
+    "asset": "npc_wizard"
+  }
+]

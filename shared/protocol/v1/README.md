@@ -19,3 +19,7 @@ Health/hello phase P0.4, hello mode world_preview. No new gameplay commands. Bra
 ## P0.5 — local movement
 Health/hello phase P0.5, hello mode=movement, gameplay=true (movement only). GET /v1/world/state requires an authenticated selected character. POST /v1/world/move accepts {dx,dz,run}; no position from client. Direction norm <=1.01; server time delta capped 0.16s, speed 4.5m/s walking or 6m/s running; shared 126 OBB collision footprints + shoreline and pier limits. State {x,z,zone,character_id}, session-selected ID only, position in process memory (not restart durable yet). POST /v1/characters/{id}/appearance accepts body/outfit/face/skin/hair/hair_color, verifies ownership and deletion status; updates only appearance. P0.3 missing fields are supported. Port 3000 retained.
 
+
+## P0.6 — diálogos e tutorial
+Health/hello phase=P0.6, mode=tutorial. GET /v1/world/quests returns {progress,title,objective,targets,completed,total} for the selected character. POST /v1/world/interact accepts {npc_id,action}; action=talk,accept,complete,pause,resume. Response {npc,quest,text,choices}. Server checks selected character and actual distance <=2.8m. npc_missing 404; npc_too_far and invalid_tutorial_action 409. Progress lives in local character roster, independent per character and durable on restart. No rewards in gold/XP/items yet; eligibility to future land deed only. Port 3000 retained.
+

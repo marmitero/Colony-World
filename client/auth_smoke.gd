@@ -10,7 +10,7 @@ func wait_for_idle(app: Node) -> bool:
 	return false
 
 func fail(message: String) -> void:
-	push_error("P05_SMOKE_FAIL "+message)
+	push_error("P06_SMOKE_FAIL "+message)
 	quit(1)
 
 func run() -> void:
@@ -154,6 +154,37 @@ func run() -> void:
 		fail("settings camera");return
 	app.set_camera_preference(prior_mode)
 	print("CW_CAMERA_MODES_OK")
+	# Walk to Maia using real movement ticks; never teleport.
+	for i in range(65):
+		if world.village.nearest_npc()=="maia":break
+		player.test_direction=(Vector2(0,-8.6)-player.authority).normalized()
+		await create_timer(.2).timeout
+	player.test_direction=Vector2.ZERO
+	await create_timer(.2).timeout
+	if world.village.nearest_npc()!="maia":
+		fail("approach Maia "+str(player.authority));return
+	var e:=InputEventKey.new()
+	e.keycode=KEY_E
+	e.pressed=true
+	Input.parse_input_event(e)
+	for i in range(50):
+		await create_timer(.1).timeout
+		if world.dialog_panel.visible:break
+	if not world.dialog_panel.visible or world.quest["progress"]["phase"]!="not_started":
+		fail("dialogue");return
+	world.interact("maia","accept")
+	for i in range(50):
+		await create_timer(.1).timeout
+		if not world.quest_busy:break
+	if world.quest["progress"]["phase"]!="arrival_visit" or world.quest["targets"]!=["oren"]:
+		fail("accept");return
+	world.close_dialog()
+	world.toggle_journal()
+	if not world.journal_panel.visible or not player.interaction_locked:
+		fail("journal");return
+	world.toggle_journal()
+	if player.interaction_locked:
+		fail("journal release");return
 	world.village.toggle_markers()
 	app.close_world_preview()
 	await process_frame
@@ -169,7 +200,7 @@ func run() -> void:
 	app.logout()
 	if not await wait_for_idle(app) or app.session_token!="" or not app.auth_form.visible:
 		fail("logout");return
-	print("CW_P05_UI_MOVEMENT_OK")
+	print("CW_P06_UI_TUTORIAL_OK")
 	app.sound.stop()
 	app.ambience.stop()
 	app.click_sound.stop()

@@ -31,7 +31,7 @@ func TestAPILifecycle(t *testing.T) {
 	}
 	w := call("GET", "/healthz", "", "", 200)
 	var health Health
-	if json.Unmarshal(w.Body.Bytes(), &health) != nil || health.Database != "local_file" || health.Phase != "P0.5" {
+	if json.Unmarshal(w.Body.Bytes(), &health) != nil || health.Database != "local_file" || health.Phase != "P0.6" {
 		t.Fatal(w.Body.String())
 	}
 	call("GET", "/v1/hello", "", "", 200)
@@ -80,6 +80,7 @@ func TestWorldRequiresSelectedCharacter(t *testing.T) {
 		return w
 	}
 	call("GET", "/v1/world/state", "", "", 401)
+	call("GET", "/v1/world/quests", "", "", 401)
 	cred := `{"email":"world@example.test","password":"fixture-only-1234"}`
 	call("POST", "/v1/auth/register", cred, "", 201)
 	w := call("POST", "/v1/auth/login", cred, "", 200)
@@ -88,6 +89,7 @@ func TestWorldRequiresSelectedCharacter(t *testing.T) {
 		t.Fatal("login")
 	}
 	call("GET", "/v1/world/state", "", login.Token, 404)
+	call("GET", "/v1/world/quests", "", login.Token, 404)
 	w = call("POST", "/v1/characters", `{"slot":1,"name":"WorldFixture","appearance":{"body":"standard","outfit":"earth","face":"oval","skin":"natural","hair":"short","hair_color":"brown"}}`, login.Token, 201)
 	var roster auth.Roster
 	if json.Unmarshal(w.Body.Bytes(), &roster) != nil || roster.Slots[0] == nil {
@@ -96,6 +98,9 @@ func TestWorldRequiresSelectedCharacter(t *testing.T) {
 	id := roster.Slots[0].ID
 	call("POST", "/v1/characters/"+id+"/select", "", login.Token, 200)
 	call("GET", "/v1/world/state", "", login.Token, 200)
+	call("GET", "/v1/world/quests", "", login.Token, 200)
+	call("POST", "/v1/world/interact", `{"npc_id":"maia","action":"accept"}`, login.Token, 409)
+	call("POST", "/v1/world/interact", `{"npc_id":"unknown","action":"talk"}`, login.Token, 404)
 	call("POST", "/v1/world/move", `{"dx":0,"dz":-1,"run":false}`, login.Token, 200)
 	call("POST", "/v1/world/move", `{"dx":2,"dz":0,"run":false}`, login.Token, 400)
 	call("POST", "/v1/characters/"+id+"/appearance", `{"body":"sturdy","outfit":"ocean","face":"angular","skin":"deep","hair":"swept","hair_color":"copper"}`, login.Token, 200)

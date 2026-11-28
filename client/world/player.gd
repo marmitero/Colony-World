@@ -11,6 +11,7 @@ var clock:=0.0
 var target:Variant=null
 var desired:=Vector2.ZERO
 var test_direction:=Vector2.ZERO
+var interaction_locked:=false
 var running:=false
 var authority:=Vector2.ZERO
 var zone:="safe"
@@ -74,7 +75,10 @@ func _physics_process(delta:float)->void:
 	if Input.is_physical_key_pressed(KEY_S):d.y+=1
 	if Input.is_physical_key_pressed(KEY_A):d.x-=1
 	if Input.is_physical_key_pressed(KEY_D):d.x+=1
-	if test_direction!=Vector2.ZERO:
+	if interaction_locked:
+		desired=Vector2.ZERO
+		target=null
+	elif test_direction!=Vector2.ZERO:
 		desired=test_direction.normalized()
 	elif d!=Vector2.ZERO:
 		target=null

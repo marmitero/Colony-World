@@ -20,6 +20,10 @@ signal camera_mode_changed(mode:int)
 var boats:Array[Node3D]=[]
 var markers:Array[Label3D]=[]
 var anchors:Dictionary={}
+var npc_catalog:Dictionary={}
+var npc_markers:Dictionary={}
+var dialog_open:=false
+signal npc_requested(id:String)
 var instances:=0
 var elapsed:=0.0
 var animate:=true
@@ -28,6 +32,8 @@ var enabled:=true
 
 func _ready()->void:
 	layout=JSON.parse_string(FileAccess.get_file_as_string("res://world/bravamar.json"))
+	for npc in JSON.parse_string(FileAccess.get_file_as_string("res://world/npcs.json")):
+		npc_catalog[npc["id"]]=npc
 	var env:=Environment.new()
 	env.background_mode=Environment.BG_COLOR
 	env.background_color=Color("#b8cbd1")
@@ -63,7 +69,9 @@ func _ready()->void:
 		if p["kind"]=="boat":boats.append(model)
 		if p["kind"]=="npc":
 			anchors[p["id"]]=model
-			add_marker(p["label"]+" · "+p["role"],model.position+Vector3(0,2.15,0),Color("#fff2c9"),22)
+			var npc:Dictionary=npc_catalog[p["id"]]
+			add_marker(npc["name"]+" · "+npc["role"],model.position+Vector3(0,2.15,0),Color(npc["color"]),22)
+			npc_markers[p["id"]]=markers[-1]
 		elif p["kind"]=="building" and p.has("service") and not String(p["service"]).begins_with("home"):
 			add_marker(p["label"],model.position+Vector3(0,6.5,0),Color("#e0e5c8"),22)
 	for e in layout["exits"]:
@@ -233,7 +241,7 @@ func _process(delta:float)->void:
 		focus=focus.lerp(player.position,minf(delta*9,1))
 		update_camera()
 func _input(event:InputEvent)->void:
-	if not enabled:return
+	if not enabled or dialog_open:return
 	if event is InputEventMouseMotion and look_drag:
 		azimuth-=event.relative.x*.18
 		if camera_mode!=0:pitch=clampf(pitch+event.relative.y*.16,-65.0,65.0)
@@ -270,9 +278,34 @@ func _input(event:InputEvent)->void:
 			get_viewport().set_input_as_handled()
 		elif event.keycode==KEY_ESCAPE:release_mouse()
 		elif event.keycode==KEY_Q:azimuth-=15
-		elif event.keycode==KEY_E:azimuth+=15
+		elif event.keycode==KEY_E:
+			var id:=nearest_npc()
+			if id!="":
+				npc_requested.emit(id)
+				get_viewport().set_input_as_handled()
+			else:azimuth+=15
 		update_camera()
 func _exit_tree()->void:
 	release_mouse()
 func toggle_markers()->void:
 	for m in markers:m.visible=not m.visible
+
+
+func nearest_npc()->String:
+	if not is_instance_valid(player):return ""
+	var closest:=""
+	var distance:=2.8
+	for id in npc_catalog:
+		var npc:Dictionary=npc_catalog[id]
+		var d:float=player.authority.distance_to(Vector2(npc["x"],npc["z"]))
+		if d<=distance:
+			distance=d
+			closest=id
+	return closest
+
+func set_quest_targets(targets:Array)->void:
+	for id in npc_markers:
+		var npc:Dictionary=npc_catalog[id]
+		var mark:Label3D=npc_markers[id]
+		mark.text=("! " if id in targets else "")+npc["name"]+" · "+npc["role"]
+		mark.modulate=Color("#ffdb80") if id in targets else Color(npc["color"])

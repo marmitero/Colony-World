@@ -33,16 +33,17 @@ type ItemStack struct {
 	Quantity int    `json:"quantity"`
 }
 type Character struct {
-	ID         string      `json:"id"`
-	Slot       int         `json:"slot"`
-	Name       string      `json:"name"`
-	Appearance Appearance  `json:"appearance"`
-	Level      int         `json:"level"`
-	City       string      `json:"city"`
-	Gold       int         `json:"gold"`
-	Inventory  []ItemStack `json:"inventory"`
-	CreatedAt  time.Time   `json:"created_at"`
-	DeleteAt   *time.Time  `json:"delete_at,omitempty"`
+	ID         string            `json:"id"`
+	Slot       int               `json:"slot"`
+	Name       string            `json:"name"`
+	Appearance Appearance        `json:"appearance"`
+	Level      int               `json:"level"`
+	City       string            `json:"city"`
+	Gold       int               `json:"gold"`
+	Inventory  []ItemStack       `json:"inventory"`
+	CreatedAt  time.Time         `json:"created_at"`
+	DeleteAt   *time.Time        `json:"delete_at,omitempty"`
+	Tutorial   *TutorialProgress `json:"tutorial,omitempty"`
 }
 type Roster struct {
 	Slots      [5]*Character `json:"slots"`

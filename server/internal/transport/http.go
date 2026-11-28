@@ -11,7 +11,7 @@ import (
 )
 
 const ProtocolVersion = 1
-const Phase = "P0.5"
+const Phase = "P0.6"
 
 type Health struct {
 	Service         string `json:"service"`
@@ -32,7 +32,7 @@ func NewHandler(s *auth.Service) http.Handler {
 		write(w, 200, Health{"colony-world", "ok", Phase, ProtocolVersion, "local_file"})
 	})
 	mux.HandleFunc("GET /v1/hello", func(w http.ResponseWriter, r *http.Request) {
-		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "movement", "gameplay": true})
+		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "tutorial", "gameplay": true})
 	})
 	mux.HandleFunc("POST /v1/auth/register", func(w http.ResponseWriter, r *http.Request) {
 		var c credentials
@@ -137,6 +137,43 @@ func NewHandler(s *auth.Service) http.Handler {
 		}
 		write(w, 200, pos)
 	})
+	mux.HandleFunc("GET /v1/world/quests", func(w http.ResponseWriter, r *http.Request) {
+		q, e := s.Tutorial(bearer(r))
+		if e != nil {
+			authError(w, e)
+			return
+		}
+		write(w, 200, q)
+	})
+	mux.HandleFunc("POST /v1/world/interact", func(w http.ResponseWriter, r *http.Request) {
+		c, e := s.Selected(bearer(r))
+		if e != nil {
+			authError(w, e)
+			return
+		}
+		var input struct {
+			NPCID  string `json:"npc_id"`
+			Action string `json:"action"`
+		}
+		if !decode(w, r, &input) {
+			return
+		}
+		n, ok := world.NPCByID(input.NPCID)
+		if !ok {
+			write(w, 404, map[string]string{"error": "npc_missing"})
+			return
+		}
+		if !movement.NearNPC(c.ID, n) {
+			write(w, 409, map[string]string{"error": "npc_too_far"})
+			return
+		}
+		d, e := s.InteractTutorial(bearer(r), c.ID, n.ID, input.Action)
+		if e != nil {
+			authError(w, e)
+			return
+		}
+		write(w, 200, map[string]any{"npc": n, "quest": d.Quest, "text": d.Text, "choices": d.Choices})
+	})
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Cache-Control", "no-store")
@@ -188,6 +225,8 @@ func authError(w http.ResponseWriter, err error) {
 		status, code = 404, "character_missing"
 	case errors.Is(err, auth.ErrDeletionPending):
 		status, code = 409, "deletion_pending"
+	case errors.Is(err, auth.ErrTutorialAction):
+		status, code = 409, "invalid_tutorial_action"
 	case errors.Is(err, auth.ErrLimited):
 		status, code = 429, "rate_limited"
 	}
