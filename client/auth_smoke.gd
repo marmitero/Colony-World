@@ -62,6 +62,21 @@ func run() -> void:
 	if world.village.instances!=world.village.layout["placements"].size()+1:
 		fail("world instances");return
 	world.village.set_focus(Vector3(0,0,-1),24)
+	var wheel:=InputEventMouseButton.new()
+	wheel.button_index=MOUSE_BUTTON_WHEEL_UP
+	wheel.pressed=true
+	Input.parse_input_event(wheel)
+	await process_frame
+	if world.village.zoom!=19.0:
+		fail("camera wheel");return
+	var angle:float=world.village.azimuth
+	var rotate:=InputEventKey.new()
+	rotate.keycode=KEY_Q
+	rotate.pressed=true
+	Input.parse_input_event(rotate)
+	await process_frame
+	if world.village.azimuth!=angle-15:
+		fail("camera rotate");return
 	world.village.toggle_markers()
 	app.close_world_preview()
 	await process_frame

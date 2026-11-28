@@ -171,7 +171,7 @@ func _process(delta:float)->void:
 		focus.x=clampf(focus.x,-46,46)
 		focus.z=clampf(focus.z,-33,34)
 		update_camera()
-func _unhandled_input(event:InputEvent)->void:
+func _input(event:InputEvent)->void:
 	if not enabled:return
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index==MOUSE_BUTTON_WHEEL_UP:zoom=maxf(12,zoom-5)
