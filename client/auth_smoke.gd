@@ -67,6 +67,8 @@ func run() -> void:
 		fail("world state");return
 	await process_frame
 	var world=app.world_preview
+	var prior_mode:int=app.camera_mode
+	app.set_camera_preference(0)
 	if not is_instance_valid(world) or world.village.anchors.size()!=12 or world.village.layout["exits"].size()!=2:
 		fail("world anchors and exits");return
 	if world.village.instances!=world.village.layout["placements"].size() or world.village.collision_count!=126:
@@ -108,6 +110,50 @@ func run() -> void:
 	await create_timer(.35).timeout
 	if player.walk_clip!="Idle" or Vector2(player.position.x,player.position.z).distance_to(player.authority)>.1:
 		fail("idle reconciliation");return
+	var f5:=InputEventKey.new()
+	f5.keycode=KEY_F5
+	f5.pressed=true
+	Input.parse_input_event(f5)
+	await process_frame
+	if world.village.camera_mode!=1 or world.village.camera.projection!=Camera3D.PROJECTION_PERSPECTIVE or not player.visual.visible:
+		fail("third person");return
+	var stored_focus:Vector3=world.village.focus
+	var stored_angle:float=world.village.azimuth
+	world.village.focus=Vector3(0,0,-16)
+	world.village.azimuth=180
+	world.village.update_camera()
+	if world.village.camera.position.distance_to(Vector3(0,1.35,-16))>=5.4:
+		fail("third person obstruction");return
+	world.village.focus=stored_focus
+	world.village.azimuth=stored_angle
+	var third_start:Vector2=player.authority
+	player.test_direction=Vector2(1,0)
+	await create_timer(.5).timeout
+	player.test_direction=Vector2.ZERO
+	if player.authority.distance_to(third_start)<.2:
+		fail("third person movement");return
+	Input.parse_input_event(f5)
+	await process_frame
+	if world.village.camera_mode!=2 or player.visual.visible or world.village.camera.position.distance_to(player.position+Vector3(0,1.55,0))>.1:
+		fail("first person");return
+	var first_start:Vector2=player.authority
+	player.test_direction=Vector2(-1,0)
+	await create_timer(.5).timeout
+	player.test_direction=Vector2.ZERO
+	if player.authority.distance_to(first_start)<.2:
+		fail("first person movement");return
+	if world.camera_choice.selected!=2 or app.camera_mode!=2:
+		fail("camera preference");return
+	var cfg:=ConfigFile.new()
+	if cfg.load("user://settings.cfg")!=OK or cfg.get_value("gameplay","camera_mode")!=2:
+		fail("camera persistence");return
+	world.camera_choice.select(0)
+	world.camera_choice.item_selected.emit(0)
+	await process_frame
+	if world.village.camera_mode!=0 or not player.visual.visible or world.village.camera.projection!=Camera3D.PROJECTION_ORTHOGONAL:
+		fail("settings camera");return
+	app.set_camera_preference(prior_mode)
+	print("CW_CAMERA_MODES_OK")
 	world.village.toggle_markers()
 	app.close_world_preview()
 	await process_frame

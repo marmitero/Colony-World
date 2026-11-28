@@ -33,12 +33,15 @@ var pending := ""
 var session_token := ""
 var online := false
 var config := ConfigFile.new()
+var camera_mode:=0
+var camera_option:OptionButton
 var reduced_motion := false
 
 func _ready() -> void:
 	harbor = Harbor.new()
 	add_child(harbor)
 	config.load("user://settings.cfg")
+	camera_mode=clampi(int(config.get_value("gameplay","camera_mode",0)),0,2)
 	reduced_motion = bool(config.get_value("menu","reduced_motion",false))
 	harbor.drift_enabled = not reduced_motion
 	sound = AudioStreamPlayer.new()
@@ -199,7 +202,7 @@ func build_ui() -> void:
 	feedback.custom_minimum_size.y=28
 	feedback.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(feedback)
-	settings=button("Áudio e acessibilidade")
+	settings=button("Configurações")
 	settings.pressed.connect(func(): settings_box.visible=not settings_box.visible)
 	box.add_child(settings)
 	settings_box=VBoxContainer.new()
@@ -218,6 +221,12 @@ func build_ui() -> void:
 	motion.button_pressed=reduced_motion
 	motion.toggled.connect(func(v): reduced_motion=v;harbor.drift_enabled=not v;config.set_value("menu","reduced_motion",v);config.save("user://settings.cfg"))
 	settings_box.add_child(motion)
+	settings_box.add_child(label("Visão do jogo",14))
+	camera_option=OptionButton.new()
+	for name_ in ["Visão superior","Terceira pessoa","Primeira pessoa"]:camera_option.add_item(name_)
+	camera_option.select(camera_mode)
+	camera_option.item_selected.connect(set_camera_preference)
+	settings_box.add_child(camera_option)
 	var refresh:=button("Verificar servidor")
 	refresh.pressed.connect(func(): request("health","/healthz"))
 	settings_box.add_child(refresh)
@@ -380,3 +389,11 @@ func close_world_preview()->void:
 		world_preview.queue_free()
 		world_preview=null
 	if is_instance_valid(character_screen):character_screen.show()
+
+func set_camera_preference(mode:int)->void:
+	camera_mode=clampi(mode,0,2)
+	config.set_value("gameplay","camera_mode",camera_mode)
+	config.save("user://settings.cfg")
+	if is_instance_valid(camera_option):camera_option.select(camera_mode)
+	if is_instance_valid(world_preview) and world_preview.village.camera_mode!=camera_mode:
+		world_preview.village.set_camera_mode(camera_mode)

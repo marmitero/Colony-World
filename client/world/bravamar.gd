@@ -10,6 +10,13 @@ var camera:Camera3D
 var focus:=Vector3(0,0,0)
 var azimuth:=25.0
 var zoom:=20.0
+# 0: superior, 1: terceira pessoa, 2: primeira pessoa.
+var camera_mode:=0
+var pitch:=15.0
+var third_distance:=5.5
+var look_drag:=false
+var player_marker:Label3D
+signal camera_mode_changed(mode:int)
 var boats:Array[Node3D]=[]
 var markers:Array[Label3D]=[]
 var anchors:Dictionary={}
@@ -90,12 +97,14 @@ func _ready()->void:
 		mark.billboard=BaseMaterial3D.BILLBOARD_ENABLED
 		mark.position=Vector3(0,2.15,0)
 		player.add_child(mark)
+		player_marker=mark
 		focus=player.position
 	camera=Camera3D.new()
 	camera.projection=Camera3D.PROJECTION_ORTHOGONAL
+	camera.near=.08
 	camera.current=true
 	add_child(camera)
-	update_camera()
+	set_camera_mode(camera_mode)
 	print("CW_P05_WORLD_READY placements=",instances," npc=",anchors.size()," exits=",layout["exits"].size())
 
 func make_surface(data:Dictionary)->void:
@@ -158,11 +167,56 @@ func add_marker(text:String,pos:Vector3,color:Color,font:int)->void:
 	add_child(m)
 	markers.append(m)
 
+func release_mouse()->void:
+	if look_drag:
+		look_drag=false
+		Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
+func set_camera_mode(mode:int)->void:
+	camera_mode=clampi(mode,0,2)
+	release_mouse()
+	pitch=0.0 if camera_mode==2 else 15.0
+	if is_instance_valid(player):
+		focus=player.position
+		player.visual.visible=camera_mode!=2
+		player.target=null
+		if is_instance_valid(player_marker):player_marker.visible=camera_mode!=2
+	if is_instance_valid(camera):update_camera()
+	camera_mode_changed.emit(camera_mode)
+func recenter_camera()->void:
+	azimuth=25
+	zoom=20
+	third_distance=5.5
+	pitch=0.0 if camera_mode==2 else 15.0
+	update_camera()
 func update_camera()->void:
+	if not is_instance_valid(camera):return
 	var r:=deg_to_rad(azimuth)
-	camera.position=focus+Vector3(sin(r)*23,28,cos(r)*23)
-	camera.look_at(focus)
-	camera.size=zoom
+	var back:=Vector3(sin(r),0,cos(r))
+	if camera_mode==0:
+		camera.projection=Camera3D.PROJECTION_ORTHOGONAL
+		camera.position=focus+back*23+Vector3(0,28,0)
+		camera.look_at(focus)
+		camera.size=zoom
+		return
+	camera.projection=Camera3D.PROJECTION_PERSPECTIVE
+	camera.fov=75 if camera_mode==2 else 65
+	var angle:=deg_to_rad(pitch)
+	var forward:=-back*cos(angle)+Vector3.DOWN*sin(angle)
+	if camera_mode==2:
+		var eye:=player.position+Vector3(0,1.55,0) if is_instance_valid(player) else focus+Vector3(0,1.55,0)
+		camera.position=eye
+		camera.look_at(eye+forward)
+		return
+	var pivot:=focus+Vector3(0,1.35,0)
+	var desired_position:=pivot-forward*third_distance
+	# Cast only against the existing solid world colliders, not the avatar.
+	var query:=PhysicsRayQueryParameters3D.create(pivot,desired_position,1)
+	var hit:=get_world_3d().direct_space_state.intersect_ray(query)
+	if not hit.is_empty():
+		var distance:=maxf(.15,pivot.distance_to(hit["position"])-.25)
+		desired_position=pivot-forward*distance
+	camera.position=desired_position
+	camera.look_at(pivot)
 func set_focus(pos:Vector3,size_:float)->void:
 	focus=pos
 	zoom=size_
@@ -180,10 +234,26 @@ func _process(delta:float)->void:
 		update_camera()
 func _input(event:InputEvent)->void:
 	if not enabled:return
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index==MOUSE_BUTTON_WHEEL_UP:zoom=maxf(12,zoom-2)
-		elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN:zoom=minf(35,zoom+2)
-		elif event.button_index==MOUSE_BUTTON_LEFT and is_instance_valid(player):
+	if event is InputEventMouseMotion and look_drag:
+		azimuth-=event.relative.x*.18
+		if camera_mode!=0:pitch=clampf(pitch+event.relative.y*.16,-65.0,65.0)
+		update_camera()
+		return
+	if event is InputEventMouseButton:
+		if event.button_index==MOUSE_BUTTON_RIGHT:
+			if event.pressed:
+				look_drag=true
+				Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
+			else:release_mouse()
+			return
+		if not event.pressed:return
+		if event.button_index==MOUSE_BUTTON_WHEEL_UP:
+			if camera_mode==0:zoom=maxf(12,zoom-2)
+			elif camera_mode==1:third_distance=maxf(2.5,third_distance-.5)
+		elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN:
+			if camera_mode==0:zoom=minf(35,zoom+2)
+			elif camera_mode==1:third_distance=minf(10,third_distance+.5)
+		elif event.button_index==MOUSE_BUTTON_LEFT and camera_mode==0 and is_instance_valid(player):
 			var area:=get_viewport().get_visible_rect().size
 			if event.position.y>100 and event.position.y<area.y-110:
 				var ray:=camera.project_ray_origin(event.position)
@@ -195,8 +265,14 @@ func _input(event:InputEvent)->void:
 					if t>0 and player.walkable(dest):player.target=dest
 		update_camera()
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode==KEY_Q:azimuth-=15
+		if event.keycode==KEY_F5:
+			set_camera_mode((camera_mode+1)%3)
+			get_viewport().set_input_as_handled()
+		elif event.keycode==KEY_ESCAPE:release_mouse()
+		elif event.keycode==KEY_Q:azimuth-=15
 		elif event.keycode==KEY_E:azimuth+=15
 		update_camera()
+func _exit_tree()->void:
+	release_mouse()
 func toggle_markers()->void:
 	for m in markers:m.visible=not m.visible

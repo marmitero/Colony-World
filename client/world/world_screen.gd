@@ -4,6 +4,9 @@ var village:Node3D
 var app:Control
 var status:Label
 var zone_label:Label
+var camera_choice:OptionButton
+var settings_panel:PanelContainer
+var control_hint:Label
 func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 	app=parent
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -11,6 +14,7 @@ func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 	village.selected=character
 	village.state=state
 	village.session_token=app.session_token
+	village.camera_mode=app.camera_mode
 	village.animate=not app.reduced_motion
 	add_child(village)
 	var top:=MarginContainer.new()
@@ -53,11 +57,12 @@ func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 	bottom.add_child(tools)
 	var box:=VBoxContainer.new()
 	tools.add_child(box)
-	box.add_child(app.label("WASD / clique no chão: mover  •  Shift: correr  •  Q/E: girar câmera  •  Rodinha: zoom",14))
+	control_hint=app.label("",14)
+	box.add_child(control_hint)
 	var buttons:=HBoxContainer.new()
 	box.add_child(buttons)
 	var recenter:Button=app.button("Centralizar câmera")
-	recenter.pressed.connect(func():village.azimuth=25;village.zoom=20;village.update_camera())
+	recenter.pressed.connect(village.recenter_camera)
 	buttons.add_child(recenter)
 	status=app.label("Servidor conectado",14,Color("#a8d89b"))
 	buttons.add_child(status)
@@ -66,7 +71,31 @@ func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 	var marker:Button=app.button("Rótulos")
 	marker.pressed.connect(village.toggle_markers)
 	buttons.add_child(marker)
+	var settings_button:Button=app.button("Configurações")
+	buttons.add_child(settings_button)
+	settings_panel=PanelContainer.new()
+	settings_panel.add_theme_stylebox_override("panel",style)
+	settings_panel.visible=false
+	var settings_box:=VBoxContainer.new()
+	settings_panel.add_child(settings_box)
+	settings_box.add_child(app.label("Visão do jogo (F5)",16,Color("#ead2a3")))
+	camera_choice=OptionButton.new()
+	for name_ in ["Visão superior","Terceira pessoa","Primeira pessoa"]:camera_choice.add_item(name_)
+	camera_choice.select(village.camera_mode)
+	camera_choice.item_selected.connect(func(mode):village.set_camera_mode(mode))
+	settings_box.add_child(camera_choice)
+	settings_box.add_child(app.label("Segure o botão direito para olhar. Solte ou aperte Esc para liberar o mouse.",13))
+	box.add_child(settings_panel)
+	settings_button.pressed.connect(func():village.release_mouse();settings_panel.visible=not settings_panel.visible)
+	village.camera_mode_changed.connect(on_camera_mode)
+	on_camera_mode(village.camera_mode)
+
 
 func update_status()->void:
 	zone_label.text="Arena • PvP aguardando implementação" if village.player.zone=="arena_future" else "Zona segura"
 	status.text="Servidor conectado" if village.player.online else "Conexão interrompida • volte ao salão"
+
+func on_camera_mode(mode:int)->void:
+	app.set_camera_preference(mode)
+	camera_choice.select(mode)
+	control_hint.text="F5: trocar visão  •  WASD / clique: mover  •  Shift: correr  •  Q/E: girar  •  Rodinha: zoom" if mode==0 else "F5: trocar visão  •  WASD: mover  •  Shift: correr  •  Botão direito + mouse: olhar  •  Q/E: girar"

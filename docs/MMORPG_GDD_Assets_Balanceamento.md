@@ -16,7 +16,7 @@ MMORPG 3D de fantasia medieval estilizada, câmera elevada em perspectiva, mundo
 - **Persistência e comunidade:** mercado regional, residência privada, contratos de trabalho, grupos, guildas, eventos globais.
 - **Justiça:** nenhum poder, ouro, experiência, recurso, capacidade de trabalho ou vantagem comercial vendido por dinheiro real. Monetização proposta: cosméticos de aparência selecionados separadamente dos equipamentos, sem impacto de colisão ou legibilidade, e emotes. Não vender slots adicionais de personagens acima de cinco.
 
-Público: jogadores de MMORPG, gestão, crafting e exploração; sessões de 15–120 minutos. PC primeiro, teclado e mouse; versão navegador é proposta opcional (não presumida como requisito). Câmera 45–60° inclinada, rotação opcional em passos, zoom limitado, leitura clara de ataques e silhuetas.
+Público: jogadores de MMORPG, gestão, crafting e exploração; sessões de 15–120 minutos. PC primeiro, teclado e mouse; versão navegador é proposta opcional (não presumida como requisito). Câmera padrão 45–60° inclinada, com perspectivas alternativas em terceira e primeira pessoa selecionáveis pelo menu Configurações ou F5. Rotação e zoom conforme perspectiva; leitura clara de ataques e silhuetas.
 
 ## 2. Fluxos e controles
 
@@ -28,6 +28,8 @@ Público: jogadores de MMORPG, gestão, crafting e exploração; sessões de 15�
 | Habilidades | Q, R, F, 1, 2, 3 (6 slots) |
 | Esquiva | espaço |
 | Alvo seguinte | Tab |
+| Perspectiva de câmera | F5 (superior → terceira → primeira) |
+| Olhar / girar câmera | botão direito + mouse; Q/E |
 | Inventário / personagem | I / C |
 | Profissões / mapa | P / M |
 | Amigos / guilda | O / G |

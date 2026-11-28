@@ -63,3 +63,5 @@ P0.3 aprovada pelo usuário. P0.4 entrega o primeiro mapa 3D com visita de câme
 ## P0.5 — Avatar e movimentação
 
 P0.4 aprovada. P0.5 entregue: [relatório](docs/p0/P0.5.md), [variantes](docs/p0/avatar-variants.jpg), [animações](docs/p0/avatar-movement.gif). WASD ou clique, Shift correr, Q/E câmera, rodinha zoom. Porta 3000 preservada.
+
+**Perspectivas:** F5 alterna superior, terceira e primeira pessoa; menu Configurações salva a preferência. Botão direito + mouse para olhar nas perspectivas próximas.
