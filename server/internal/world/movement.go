@@ -12,6 +12,9 @@ import (
 //go:embed collision.json
 var collisionData []byte
 
+//go:embed forest_collision.json
+var forestData []byte
+
 type Box struct {
 	ID     string  `json:"id"`
 	X      float64 `json:"x"`
@@ -22,6 +25,7 @@ type Box struct {
 	Rot    float64 `json:"rot"`
 }
 type Geometry struct {
+	MaxZ    float64    `json:"max_z"`
 	Version int        `json:"version"`
 	Spawn   [2]float64 `json:"spawn"`
 	Bounds  [3]float64 `json:"bounds"`
@@ -34,6 +38,7 @@ type Geometry struct {
 	Boxes []Box `json:"boxes"`
 }
 type Position struct {
+	Map         string  `json:"map"`
 	X           float64 `json:"x"`
 	Z           float64 `json:"z"`
 	Zone        string  `json:"zone"`
@@ -51,6 +56,7 @@ type entry struct {
 type Service struct {
 	mu     sync.Mutex
 	geom   Geometry
+	forest Geometry
 	states map[string]entry
 	now    func() time.Time
 }
@@ -62,10 +68,14 @@ func New() *Service {
 	if e := json.Unmarshal(collisionData, &g); e != nil {
 		panic(e)
 	}
-	return &Service{geom: g, states: map[string]entry{}, now: time.Now}
+	var forest Geometry
+	if e := json.Unmarshal(forestData, &forest); e != nil {
+		panic(e)
+	}
+	return &Service{geom: g, forest: forest, states: map[string]entry{}, now: time.Now}
 }
 func (s *Service) initial(id string) entry {
-	return entry{Position: Position{X: s.geom.Spawn[0], Z: s.geom.Spawn[1], Zone: "safe", CharacterID: id}, last: s.now()}
+	return entry{Position: Position{Map: "bravamar", X: s.geom.Spawn[0], Z: s.geom.Spawn[1], Zone: "safe", CharacterID: id}, last: s.now()}
 }
 func (s *Service) State(id string) Position {
 	s.mu.Lock()
@@ -87,6 +97,10 @@ func (s *Service) Move(id string, in Input) (Position, error) {
 	if !ok {
 		v = s.initial(id)
 	}
+	g := s.geom
+	if v.Map == "bosque" {
+		g = s.forest
+	}
 	now := s.now()
 	dt := math.Max(0, math.Min(.16, now.Sub(v.last).Seconds()))
 	v.last = now
@@ -102,19 +116,19 @@ func (s *Service) Move(id string, in Input) (Position, error) {
 	}
 	for i := 0; i < steps; i++ {
 		nx, nz := v.X+dx/float64(steps), v.Z+dz/float64(steps)
-		if s.geom.Walkable(nx, nz) {
+		if g.Walkable(nx, nz) {
 			v.X, v.Z = nx, nz
 			continue
 		}
-		if s.geom.Walkable(nx, v.Z) {
+		if g.Walkable(nx, v.Z) {
 			v.X = nx
 		}
-		if s.geom.Walkable(v.X, nz) {
+		if g.Walkable(v.X, nz) {
 			v.Z = nz
 		}
 	}
 	v.Zone = "safe"
-	if math.Hypot(v.X-s.geom.Arena.Center[0], v.Z-s.geom.Arena.Center[1]) <= s.geom.Arena.Radius {
+	if v.Map == "bravamar" && math.Hypot(v.X-g.Arena.Center[0], v.Z-g.Arena.Center[1]) <= g.Arena.Radius {
 		v.Zone = "arena_future"
 	}
 	s.states[id] = v
@@ -125,8 +139,11 @@ func (g Geometry) Walkable(x, z float64) bool {
 	if x < g.Bounds[0] || x > g.Bounds[1] || z < g.Bounds[2] {
 		return false
 	}
+	if g.MaxZ > 0 && z > g.MaxZ {
+		return false
+	}
 	shore := 26.5 + 1.8*math.Sin(x*.12) + .9*math.Sin(x*.26+1.2)
-	if z > shore-r {
+	if g.MaxZ == 0 && z > shore-r {
 		onPier := false
 		for _, p := range g.Piers {
 			if math.Abs(x-p.X) <= p.HX-r && math.Abs(z-p.Z) <= p.HZ-r {
@@ -147,4 +164,31 @@ func (g Geometry) Walkable(x, z float64) bool {
 		}
 	}
 	return true
+}
+
+var ErrPortal = errors.New("portal unavailable or too far")
+
+func (s *Service) Travel(id, destination string) (Position, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	v, ok := s.states[id]
+	if !ok {
+		v = s.initial(id)
+	}
+	switch {
+	case v.Map == "bravamar" && destination == "bosque" && math.Hypot(v.X+46, v.Z+3) <= 3:
+		v.Map = "bosque"
+		v.X = 39
+		v.Z = 0
+	case v.Map == "bosque" && destination == "bravamar" && math.Hypot(v.X-43, v.Z) <= 3:
+		v.Map = "bravamar"
+		v.X = -42
+		v.Z = -3
+	default:
+		return v.Position, ErrPortal
+	}
+	v.Zone = "safe"
+	v.last = s.now()
+	s.states[id] = v
+	return v.Position, nil
 }

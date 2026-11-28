@@ -29,6 +29,8 @@ jobs:
         run: python3 ../tests/check_movement_data.py
       - if: runner.os == 'Linux'
         run: python3 ../tests/check_npc_data.py
+      - if: runner.os == 'Linux'
+        run: python3 ../tests/check_forest_data.py
       - if: runner.os == 'Windows'
         shell: pwsh
         run: |

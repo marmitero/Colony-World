@@ -37,5 +37,5 @@ func NPCByID(id string) (NPC, bool) {
 }
 func (s *Service) NearNPC(character string, n NPC) bool {
 	p := s.State(character)
-	return math.Hypot(p.X-n.X, p.Z-n.Z) <= InteractionDistance
+	return p.Map == "bravamar" && math.Hypot(p.X-n.X, p.Z-n.Z) <= InteractionDistance
 }

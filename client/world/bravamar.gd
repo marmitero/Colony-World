@@ -6,6 +6,8 @@ var state:Dictionary={}
 var session_token:String=""
 var collision_count:=0
 var layout:Dictionary
+var map_id:="bravamar"
+signal portal_requested(destination:String)
 var camera:Camera3D
 var focus:=Vector3(0,0,0)
 var azimuth:=25.0
@@ -31,7 +33,8 @@ var selected:Dictionary={}
 var enabled:=true
 
 func _ready()->void:
-	layout=JSON.parse_string(FileAccess.get_file_as_string("res://world/bravamar.json"))
+	map_id=state.get("map","bravamar")
+	layout=JSON.parse_string(FileAccess.get_file_as_string("res://world/forest.json" if map_id=="bosque" else "res://world/bravamar.json"))
 	for npc in JSON.parse_string(FileAccess.get_file_as_string("res://world/npcs.json")):
 		npc_catalog[npc["id"]]=npc
 	var env:=Environment.new()
@@ -51,22 +54,36 @@ func _ready()->void:
 	add_child(sun)
 	for m in layout["meshes"]:
 		make_surface(m)
-	var water:=MeshInstance3D.new()
-	var plane:=PlaneMesh.new()
-	plane.size=Vector2(140,60)
-	plane.subdivide_width=60
-	plane.subdivide_depth=30
-	water.mesh=plane
-	var wm:=ShaderMaterial.new()
-	wm.shader=preload("res://water.gdshader")
-	wm.set_shader_parameter("deep_color",Color("#477a8b"))
-	wm.set_shader_parameter("glow_color",Color("#8eb2ac"))
-	water.material_override=wm
-	water.position=Vector3(0,-.24,52)
-	add_child(water)
+	if map_id=="bravamar":
+		var water:=MeshInstance3D.new()
+		var plane:=PlaneMesh.new()
+		plane.size=Vector2(140,60)
+		plane.subdivide_width=60
+		plane.subdivide_depth=30
+		water.mesh=plane
+		var wm:=ShaderMaterial.new()
+		wm.shader=preload("res://water.gdshader")
+		wm.set_shader_parameter("deep_color",Color("#477a8b"))
+		wm.set_shader_parameter("glow_color",Color("#8eb2ac"))
+		water.material_override=wm
+		water.position=Vector3(0,-.24,52)
+		add_child(water)
 	for p in layout["placements"]:
 		var model:=place(p)
 		if p["kind"]=="boat":boats.append(model)
+		if p["kind"]=="creature":
+			add_marker(p["label"]+" · Nv. "+str(int(p["level"])),model.position+Vector3(0,1.6,0),Color("#e5c9a2"),25)
+			for item in model.find_children("*","AnimationPlayer",true,false):
+				var ap:=item as AnimationPlayer
+				for clip in ap.get_animation_list():
+					if String(clip).to_lower().contains("idle") or String(clip).to_lower()=="flying":
+						ap.get_animation(clip).loop_mode=Animation.LOOP_LINEAR
+						ap.play(clip)
+						break
+		elif p["kind"]=="resource":
+			add_marker(p["label"],model.position+Vector3(0,1.1,0),Color("#c3e6a2"),20)
+		elif p["kind"]=="landmark":
+			add_marker(p["label"],model.position+Vector3(0,3,0),Color("#f4e3a7"),26)
 		if p["kind"]=="npc":
 			anchors[p["id"]]=model
 			var npc:Dictionary=npc_catalog[p["id"]]
@@ -76,9 +93,10 @@ func _ready()->void:
 			add_marker(p["label"],model.position+Vector3(0,6.5,0),Color("#e0e5c8"),22)
 	for e in layout["exits"]:
 		add_marker("↗ "+e["label"]+" · "+e["level"],Vector3(e["x"],2.6,e["z"]),Color("#d4e8b4"),32)
-	add_marker("ARENA  ·  PvP futuro",Vector3(0,2.8,-1),Color("#ffd0a1"),34)
-	add_marker("Porto de Bravamar",Vector3(7,2.2,25),Color("#e1d7bd"),30)
-	var geo:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://world/collision.json"))
+	if map_id=="bravamar":
+		add_marker("ARENA  ·  PvP futuro",Vector3(0,2.8,-1),Color("#ffd0a1"),34)
+		add_marker("Porto de Bravamar",Vector3(7,2.2,25),Color("#e1d7bd"),30)
+	var geo:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://world/forest_collision.json" if map_id=="bosque" else "res://world/collision.json"))
 	for box in geo["boxes"]:
 		var body:=StaticBody3D.new()
 		body.collision_layer=1
@@ -141,6 +159,7 @@ func make_surface(data:Dictionary)->void:
 func place(p:Dictionary)->Node3D:
 	var id:=String(p["asset"])
 	var path:="res://world/assets/"+id+".glb"
+	if map_id=="bosque" and ResourceLoader.exists("res://world/forest_assets/"+id+".glb"):path="res://world/forest_assets/"+id+".glb"
 	if not ResourceLoader.exists(path):path="res://menu_assets/"+id+".glb"
 	var scene:=load(path) as PackedScene
 	var node:=scene.instantiate() as Node3D
@@ -279,8 +298,12 @@ func _input(event:InputEvent)->void:
 		elif event.keycode==KEY_ESCAPE:release_mouse()
 		elif event.keycode==KEY_Q:azimuth-=15
 		elif event.keycode==KEY_E:
+			var portal:=near_portal()
 			var id:=nearest_npc()
-			if id!="":
+			if portal!="":
+				portal_requested.emit(portal)
+				get_viewport().set_input_as_handled()
+			elif id!="":
 				npc_requested.emit(id)
 				get_viewport().set_input_as_handled()
 			else:azimuth+=15
@@ -292,7 +315,7 @@ func toggle_markers()->void:
 
 
 func nearest_npc()->String:
-	if not is_instance_valid(player):return ""
+	if map_id!="bravamar" or not is_instance_valid(player):return ""
 	var closest:=""
 	var distance:=2.8
 	for id in npc_catalog:
@@ -309,3 +332,11 @@ func set_quest_targets(targets:Array)->void:
 		var mark:Label3D=npc_markers[id]
 		mark.text=("! " if id in targets else "")+npc["name"]+" · "+npc["role"]
 		mark.modulate=Color("#ffdb80") if id in targets else Color(npc["color"])
+
+func near_portal()->String:
+	if not is_instance_valid(player):return ""
+	for e in layout["exits"]:
+		if e["id"]=="ferrugem":continue
+		if player.authority.distance_to(Vector2(e["x"],e["z"]))<=3.0:
+			return e["id"]
+	return ""

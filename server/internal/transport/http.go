@@ -11,7 +11,7 @@ import (
 )
 
 const ProtocolVersion = 1
-const Phase = "P0.6"
+const Phase = "P0.7"
 
 type Health struct {
 	Service         string `json:"service"`
@@ -32,7 +32,7 @@ func NewHandler(s *auth.Service) http.Handler {
 		write(w, 200, Health{"colony-world", "ok", Phase, ProtocolVersion, "local_file"})
 	})
 	mux.HandleFunc("GET /v1/hello", func(w http.ResponseWriter, r *http.Request) {
-		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "tutorial", "gameplay": true})
+		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "exploration", "gameplay": true})
 	})
 	mux.HandleFunc("POST /v1/auth/register", func(w http.ResponseWriter, r *http.Request) {
 		var c credentials
@@ -133,6 +133,25 @@ func NewHandler(s *auth.Service) http.Handler {
 		pos, e := movement.Move(c.ID, input)
 		if e != nil {
 			write(w, 400, map[string]string{"error": "invalid_movement"})
+			return
+		}
+		write(w, 200, pos)
+	})
+	mux.HandleFunc("POST /v1/world/travel", func(w http.ResponseWriter, r *http.Request) {
+		c, e := s.Selected(bearer(r))
+		if e != nil {
+			authError(w, e)
+			return
+		}
+		var input struct {
+			Destination string `json:"destination"`
+		}
+		if !decode(w, r, &input) {
+			return
+		}
+		pos, e := movement.Travel(c.ID, input.Destination)
+		if e != nil {
+			write(w, 409, map[string]string{"error": "portal_unavailable"})
 			return
 		}
 		write(w, 200, pos)

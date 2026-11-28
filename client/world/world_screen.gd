@@ -8,6 +8,8 @@ var camera_choice:OptionButton
 var settings_panel:PanelContainer
 var control_hint:Label
 var quest:Dictionary={}
+var selected_character:Dictionary
+var travel_pending:=false
 var quest_http:HTTPRequest
 var quest_busy:=false
 var request_kind:=""
@@ -24,6 +26,7 @@ var journal_panel:PanelContainer
 var journal_text:Label
 func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 	app=parent
+	selected_character=character
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	village=Bravamar.new()
 	village.selected=character
@@ -54,7 +57,7 @@ func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 	var titlebox:=VBoxContainer.new()
 	titlebox.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	row.add_child(titlebox)
-	titlebox.add_child(app.label("BRAVAMAR  /  VILA INICIAL",22,Color("#ead2a3")))
+	titlebox.add_child(app.label("BOSQUE DO ORVALHO  /  NÍVEL 1–5" if village.map_id=="bosque" else "BRAVAMAR  /  VILA INICIAL",22,Color("#ead2a3")))
 	titlebox.add_child(app.label(String(character.get("name"))+"  •  Nível "+str(character.get("level"))+"  •  "+str(character.get("gold"))+" G",14))
 	zone_label=app.label("Zona segura",14,Color("#a8d89b"))
 	titlebox.add_child(zone_label)
@@ -85,7 +88,10 @@ func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 	buttons.add_child(status)
 	talk_button=app.button("Conversar (E)")
 	talk_button.disabled=true
-	talk_button.pressed.connect(func():interact(village.nearest_npc()))
+	talk_button.pressed.connect(func():
+		var portal:String=village.near_portal()
+		if portal!="":travel(portal)
+		else:interact(village.nearest_npc()))
 	buttons.add_child(talk_button)
 	var journal:Button=app.button("Diário (J)")
 	buttons.add_child(journal)
@@ -117,6 +123,7 @@ func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 	on_camera_mode(village.camera_mode)
 	build_quest_ui(style)
 	village.npc_requested.connect(interact)
+	village.portal_requested.connect(travel)
 	quest_http=HTTPRequest.new()
 	quest_http.timeout=6
 	add_child(quest_http)
@@ -126,12 +133,14 @@ func setup(parent:Control,character:Dictionary,state:Dictionary)->void:
 
 
 func update_status()->void:
-	zone_label.text="Arena • PvP aguardando implementação" if village.player.zone=="arena_future" else "Zona segura"
+	zone_label.text="Bosque • Não PvP" if village.map_id=="bosque" else "Arena • PvP aguardando implementação" if village.player.zone=="arena_future" else "Zona segura"
 	status.text="Servidor conectado" if village.player.online else "Conexão interrompida • volte ao salão"
 	if talk_button!=null:
 		var id:String=village.nearest_npc()
-		talk_button.disabled=id=="" or quest_busy or village.dialog_open
-		prompt_label.text="E · conversar com "+village.npc_catalog[id]["name"] if id!="" else "Aproxime-se de um NPC para conversar."
+		var portal:String=village.near_portal()
+		talk_button.text="Viajar (E)" if portal!="" else "Conversar (E)"
+		talk_button.disabled=(id=="" and portal=="") or quest_busy or village.dialog_open or travel_pending
+		prompt_label.text="E · viajar para "+("Bravamar" if portal=="bravamar" else "Bosque do Orvalho") if portal!="" else "E · conversar com "+village.npc_catalog[id]["name"] if id!="" else ("Explore os recursos e criaturas • combate e coleta em fases futuras." if village.map_id=="bosque" else "Aproxime-se de um NPC ou da saída oeste.")
 
 func on_camera_mode(mode:int)->void:
 	app.set_camera_preference(mode)
@@ -192,7 +201,7 @@ func _input(event:InputEvent)->void:
 			get_viewport().set_input_as_handled()
 
 func toggle_journal()->void:
-	if village.dialog_open:return
+	if village.dialog_open or travel_pending:return
 	village.release_mouse()
 	journal_panel.visible=not journal_panel.visible
 	village.player.interaction_locked=journal_panel.visible
@@ -200,7 +209,7 @@ func toggle_journal()->void:
 	village.enabled=not journal_panel.visible
 
 func interact(id:String,action:String="talk")->void:
-	if quest_busy or id=="" or journal_panel.visible:return
+	if travel_pending or quest_busy or id=="" or journal_panel.visible:return
 	active_npc=id
 	village.release_mouse()
 	village.dialog_open=true
@@ -213,6 +222,8 @@ func send_quest(kind:String,path:String,method:HTTPClient.Method,body:String)->v
 	var error:=quest_http.request("http://127.0.0.1:3000"+path,PackedStringArray(["Authorization: Bearer "+app.session_token,"Content-Type: application/json"]),method,body)
 	if error!=OK:
 		quest_busy=false
+		travel_pending=false
+		village.player.set_physics_process(true)
 		close_dialog()
 		quest_label.text="Não foi possível consultar o servidor."
 
@@ -220,8 +231,13 @@ func quest_response(result:int,code:int,_headers:PackedStringArray,body:PackedBy
 	quest_busy=false
 	var data:Variant=JSON.parse_string(body.get_string_from_utf8())
 	if result!=HTTPRequest.RESULT_SUCCESS or code!=200 or not data is Dictionary:
+		travel_pending=false
+		village.player.set_physics_process(true)
 		close_dialog()
 		quest_label.text="Aproxime-se do NPC e tente novamente." if data is Dictionary and data.get("error")=="npc_too_far" else "Não foi possível concluir a interação. Tente novamente."
+		return
+	if request_kind=="travel":
+		call_deferred("finish_travel")
 		return
 	quest=data if request_kind=="quest" else data["quest"]
 	refresh_quest()
@@ -266,3 +282,18 @@ func close_dialog()->void:
 	village.dialog_open=false
 	village.player.interaction_locked=false
 	update_status()
+
+func travel(destination:String)->void:
+	if travel_pending or quest_busy or journal_panel.visible or village.dialog_open or destination!=village.near_portal():return
+	travel_pending=true
+	village.release_mouse()
+	village.dialog_open=true
+	village.player.interaction_locked=true
+	village.player.set_physics_process(false)
+	while village.player.busy:
+		await get_tree().process_frame
+	send_quest("travel","/v1/world/travel",HTTPClient.METHOD_POST,JSON.stringify({"destination":destination}))
+
+func finish_travel()->void:
+	app.close_world_preview()
+	app.open_world_preview(selected_character)

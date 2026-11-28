@@ -23,3 +23,6 @@ Health/hello phase P0.5, hello mode=movement, gameplay=true (movement only). GET
 ## P0.6 — diálogos e tutorial
 Health/hello phase=P0.6, mode=tutorial. GET /v1/world/quests returns {progress,title,objective,targets,completed,total} for the selected character. POST /v1/world/interact accepts {npc_id,action}; action=talk,accept,complete,pause,resume. Response {npc,quest,text,choices}. Server checks selected character and actual distance <=2.8m. npc_missing 404; npc_too_far and invalid_tutorial_action 409. Progress lives in local character roster, independent per character and durable on restart. No rewards in gold/XP/items yet; eligibility to future land deed only. Port 3000 retained.
 
+
+## P0.7 — exploração
+Health/hello phase=P0.7, mode=exploration. Estado e movimento incluem map=bravamar|bosque. POST /v1/world/travel accepts {destination}; server validates selected character, current map, proximity <=3m to fixed portal, and returns authoritative position/map; portal_unavailable 409. Only the west exit is enabled. Forest is non-PvP; NPC interaction only in Bravamar. Map/position are process memory until P0.13.

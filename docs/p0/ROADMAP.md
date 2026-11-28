@@ -9,8 +9,8 @@ P00 aprovada em 27/11/2026. Cada etapa exige código, teste, registro e aprovaç
 | P0.3 ✅ aprovada | Seleção/criação de até 5 personagens; limites persistentes |
 | P0.4 ✅ aprovada | Vila Bravamar: direção artística original, NPCs e arena delimitada |
 | P0.5 ✅ aprovada | Avatar, câmera e movimento; validação de estado |
-| P0.6 ⏳ entregue | NPCs, diálogo e tutorial |
-| P0.7 | Bosque do Orvalho; novos inimigos e recursos homologados |
+| P0.6 ✅ aprovada | NPCs, diálogo e tutorial |
+| P0.7 ⏳ entregue | Bosque do Orvalho; novos inimigos e recursos homologados |
 | P0.8 | Combate, XP e atributos; regras autoritativas |
 | P0.9 | Inventário, equipamentos e consumíveis |
 | P0.10 | Coleta, ferramentas iniciais, nós e respawn |

@@ -10,7 +10,7 @@ func wait_for_idle(app: Node) -> bool:
 	return false
 
 func fail(message: String) -> void:
-	push_error("P06_SMOKE_FAIL "+message)
+	push_error("P07_SMOKE_FAIL "+message)
 	quit(1)
 
 func run() -> void:
@@ -185,6 +185,46 @@ func run() -> void:
 	world.toggle_journal()
 	if player.interaction_locked:
 		fail("journal release");return
+	# Cross town on confirmed movement ticks and use both portal directions.
+	for waypoint in [Vector2(0,-8),Vector2(-31,-4),Vector2(-44,-3)]:
+		for i in range(100):
+			if player.authority.distance_to(waypoint)<.55:break
+			player.test_direction=(waypoint-player.authority).normalized()
+			await create_timer(.12).timeout
+		player.test_direction=Vector2.ZERO
+		if player.authority.distance_to(waypoint)>1:
+			fail("route "+str(player.authority));return
+	if world.village.near_portal()!="bosque":
+		fail("west gate");return
+	world.travel("bosque")
+	for i in range(100):
+		await create_timer(.1).timeout
+		if is_instance_valid(app.world_preview) and app.world_preview.village.map_id=="bosque":break
+	world=app.world_preview
+	if not is_instance_valid(world) or world.village.map_id!="bosque":
+		fail("enter forest");return
+	player=world.village.player
+	if player.zone!="safe" or world.village.anchors.size()!=0 or player.walkable(Vector2(-22.5,22)) or player.walkable(Vector2(0,46)):
+		fail("forest bounds");return
+	world.village.set_camera_mode(1)
+	world.village.set_camera_mode(2)
+	world.village.set_camera_mode(0)
+	for i in range(40):
+		if world.village.near_portal()=="bravamar":break
+		player.test_direction=Vector2(1,0)
+		await create_timer(.1).timeout
+	player.test_direction=Vector2.ZERO
+	await create_timer(.25).timeout
+	if world.village.near_portal()!="bravamar":
+		fail("forest gate");return
+	world.travel("bravamar")
+	for i in range(100):
+		await create_timer(.1).timeout
+		if is_instance_valid(app.world_preview) and app.world_preview.village.map_id=="bravamar":break
+	world=app.world_preview
+	if not is_instance_valid(world) or world.village.map_id!="bravamar":
+		fail("return city");return
+	print("CW_P07_PORTALS_OK")
 	world.village.toggle_markers()
 	app.close_world_preview()
 	await process_frame
@@ -200,7 +240,7 @@ func run() -> void:
 	app.logout()
 	if not await wait_for_idle(app) or app.session_token!="" or not app.auth_form.visible:
 		fail("logout");return
-	print("CW_P06_UI_TUTORIAL_OK")
+	print("CW_P07_UI_EXPLORATION_OK")
 	app.sound.stop()
 	app.ambience.stop()
 	app.click_sound.stop()

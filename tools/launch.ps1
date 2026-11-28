@@ -31,7 +31,7 @@ function Find-Godot {
 function Get-Health {
     try {
         $h = Invoke-RestMethod -Uri "http://127.0.0.1:3000/healthz" -TimeoutSec 1
-        return ($h.service -eq "colony-world" -and $h.status -eq "ok" -and $h.phase -eq "P0.6" -and $h.protocol_version -eq 1)
+        return ($h.service -eq "colony-world" -and $h.status -eq "ok" -and $h.phase -eq "P0.7" -and $h.protocol_version -eq 1)
     } catch { return $false }
 }
 try {

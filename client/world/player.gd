@@ -26,7 +26,7 @@ func setup(w:Node3D,c:Dictionary,state:Dictionary,session:String)->void:
 	world=w
 	character=c
 	token=session
-	geo=JSON.parse_string(FileAccess.get_file_as_string("res://world/collision.json"))
+	geo=JSON.parse_string(FileAccess.get_file_as_string("res://world/forest_collision.json" if state.get("map")=="bosque" else "res://world/collision.json"))
 	collision_layer=2
 	collision_mask=1
 	motion_mode=CharacterBody3D.MOTION_MODE_FLOATING
@@ -53,7 +53,8 @@ func walkable(p:Vector2)->bool:
 	var b:Array=geo["bounds"]
 	if p.x<float(b[0]) or p.x>float(b[1]) or p.y<float(b[2]):return false
 	var shore:=26.5+1.8*sin(p.x*.12)+.9*sin(p.x*.26+1.2)
-	if p.y>shore-r:
+	if geo.has("max_z") and p.y>float(geo["max_z"]):return false
+	if not geo.has("max_z") and p.y>shore-r:
 		var on_pier:=false
 		for pier in geo["piers"]:
 			if absf(p.x-float(pier["x"]))<=float(pier["hx"])-r and absf(p.y-float(pier["z"]))<=float(pier["hz"])-r:on_pier=true

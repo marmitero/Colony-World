@@ -38,7 +38,7 @@ P0 iniciada após aprovação da P00.
 1. Baixe e extraia o repositório.
 2. Instale **Go 1.24+** uma vez e disponibilize **Godot 4.7.2** (executável na raiz, em tools/godot/GODOT_EXE.exe, no PATH ou variável GODOT_EXE).
 3. Dê duplo clique em `jogar.bat`. Ele compila e inicia o servidor local, importa o projeto Godot, abre o cliente e encerra apenas o servidor que iniciou ao fechar.
-4. Na P0.6, após login e seleção do personagem, use Entrar em Bravamar para controlar seu avatar. PostgreSQL/Docker não são obrigatórios. Aproxime-se de Maia, pressione E para conversar e J para acompanhar as missões.
+4. Na P0.7, após login e seleção do personagem, use Entrar em Bravamar para controlar seu avatar. PostgreSQL/Docker não são obrigatórios. Aproxime-se de Maia, pressione E para conversar e J para acompanhar as missões.
 
 Não há downloads automáticos, scripts de instalação nem credenciais versionadas.
 
@@ -68,5 +68,9 @@ P0.4 aprovada. P0.5 aprovada pelo usuário em 28/11/2026: [relatório](docs/p0/P
 
 ## P0.6 — NPCs e tutorial
 
-12 NPCs com identidades, diálogos e funções; três missões introdutórias opcionais e persistentes por personagem. E próximo ao NPC conversa; longe dele mantém a rotação de câmera. J abre o diário. [Relatório e roteiro de testes](docs/p0/P0.6.md). Entregue para aprovação.
+12 NPCs com identidades, diálogos e funções; três missões introdutórias opcionais e persistentes por personagem. E próximo ao NPC conversa; longe dele mantém a rotação de câmera. J abre o diário. [Relatório e roteiro de testes](docs/p0/P0.6.md). P0.6 aprovada pelo usuário em 28/11/2026.
 
+
+## P0.7 — Bosque do Orvalho
+
+Primeiro mapa de exploração non-PvP (níveis 1–5), acessível pela saída oeste de Bravamar (E ao se aproximar). Quatro espécies, quatro famílias de recursos, moinho e trilhas. [Relatório e roteiro de testes](docs/p0/P0.7.md). Entregue para aprovação.
