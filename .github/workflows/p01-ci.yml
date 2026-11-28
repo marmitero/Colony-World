@@ -1,7 +1,7 @@
 name: Colony World foundation checks
 on:
   push:
-    paths: ["server/**", "tools/launch.ps1", "jogar.bat", "shared/**", "migrations/**", "tests/**", ".github/workflows/p01-ci.yml"]
+    paths: ["server/**", "client/world/**", "tools/launch.ps1", "jogar.bat", "shared/**", "migrations/**", "tests/**", ".github/workflows/p01-ci.yml"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -23,6 +23,8 @@ jobs:
       - run: go test ./...
       - run: go vet ./...
       - run: go build -buildvcs=false ./cmd/colony
+      - if: runner.os == 'Linux'
+        run: python3 ../tests/check_bravamar.py
       - if: runner.os == 'Windows'
         shell: pwsh
         run: |

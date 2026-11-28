@@ -10,3 +10,5 @@ __pycache__/
 
 # Godot may extract embedded menu textures locally.
 client/menu_assets/*.png
+
+client/world/assets/*.png

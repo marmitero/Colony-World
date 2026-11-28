@@ -15,6 +15,7 @@ var heading:Label
 var info:Label
 var feedback:Label
 var choose:Button
+var enter_world:Button
 var delete_button:Button
 var cancel_delete:Button
 var create_button:Button
@@ -120,6 +121,9 @@ func setup(parent:Control)->void:
 	choose=app.button("Selecionar personagem",true)
 	choose.pressed.connect(func():change("select"))
 	details.add_child(choose)
+	enter_world=app.button("Visitar Bravamar",true)
+	enter_world.pressed.connect(func():app.open_world_preview(slots[focus_slot-1]))
+	details.add_child(enter_world)
 	delete_button=app.button("Solicitar exclusão")
 	delete_button.pressed.connect(func():delete_dialog.popup_centered())
 	details.add_child(delete_button)
@@ -156,7 +160,7 @@ func set_roster(data:Dictionary,kind:String)->void:
 	refresh()
 	match kind:
 		"char_create":feedback.text="Personagem criado! Selecione para continuar."
-		"char_select":feedback.text="Personagem escolhido. A entrada no mundo será liberada na P0.4/P0.5."
+		"char_select":feedback.text="Personagem escolhido. Visite Bravamar para conhecer a vila."
 		"char_delete":feedback.text="Exclusão agendada; você pode cancelar."
 		"char_cancel_delete":feedback.text="Exclusão cancelada."
 		_:feedback.text=""
@@ -175,7 +179,8 @@ func refresh()->void:
 		var pending:bool=active.has("delete_at")
 		info.text="%s  •  Nível %d  •  %s\nKit inicial: picareta, machado, espada e 2 poções."%[active.get("name"),active.get("level"),active.get("city")]
 		if pending:info.text+="\nExclusão: "+String(active.get("delete_at"))
-		choose.visible=not pending
+		choose.visible=not pending and active.get("id")!=selected_id
+		enter_world.visible=not pending and active.get("id")==selected_id
 		delete_button.visible=not pending
 		cancel_delete.visible=pending
 	refresh_preview()

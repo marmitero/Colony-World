@@ -38,7 +38,7 @@ P0 iniciada após aprovação da P00.
 1. Baixe e extraia o repositório.
 2. Instale **Go 1.24+** uma vez e disponibilize **Godot 4.7.2** (executável na raiz, em tools/godot/GODOT_EXE.exe, no PATH ou variável GODOT_EXE).
 3. Dê duplo clique em `jogar.bat`. Ele compila e inicia o servidor local, importa o projeto Godot, abre o cliente e encerra apenas o servidor que iniciou ao fechar.
-4. Na P0.3, verá a tela inicial animada, cadastro/login e o salão de seleção de personagens. PostgreSQL/Docker não são obrigatórios. A jogabilidade começa nas fases seguintes.
+4. Na P0.4, após login e seleção do personagem, use Visitar Bravamar para observar o mapa da vila. PostgreSQL/Docker não são obrigatórios. A jogabilidade começa nas fases seguintes.
 
 Não há downloads automáticos, scripts de instalação nem credenciais versionadas.
 
@@ -55,3 +55,7 @@ Contas de teste persistentes em %LOCALAPPDATA%/ColonyWorld/dev; não usar creden
 
 P0.2 aprovada pelo usuário; P0.3 entregue para validação. [Relatório P0.3](docs/p0/P0.3.md). Os personagens são persistidos no mesmo diretório de dados local da conta. A entrada no mundo ainda não está implementada.
 
+
+## P0.4 — Vila Bravamar
+
+P0.3 aprovada pelo usuário. P0.4 entrega o primeiro mapa 3D com visita de câmera, sem movimentação jogável. [Relatório](docs/p0/P0.4.md) · [Prévia da vila](docs/p0/bravamar-overview.png).

@@ -2,6 +2,8 @@ extends Control
 const BASE := "http://127.0.0.1:3000"
 const Harbor = preload("res://harbor.gd")
 const Characters = preload("res://character_screen.gd")
+const WorldPreview = preload("res://world/world_screen.gd")
+var world_preview:Control
 var character_screen: Control
 var login_margin: MarginContainer
 var harbor: Node3D
@@ -218,7 +220,7 @@ func build_ui() -> void:
 	var refresh:=button("Verificar servidor")
 	refresh.pressed.connect(func(): request("health","/healthz"))
 	settings_box.add_child(refresh)
-	overall.add_child(label("P0.3  •  Ambiente local de desenvolvimento  •  Contas de teste",13,Color("#e0ddcb")))
+	overall.add_child(label("P0.4  •  Ambiente local de desenvolvimento  •  Contas de teste",13,Color("#e0ddcb")))
 	update_mode()
 func set_volume(v: float) -> void:
 	sound.volume_db=linear_to_db(maxf(v,.0001))
@@ -278,10 +280,10 @@ func on_response(result: int,code: int,_headers: PackedStringArray,body: PackedB
 	if result==HTTPRequest.RESULT_SUCCESS and body.size()>0:
 		data=JSON.parse_string(body.get_string_from_utf8())
 	if kind=="health":
-		online=result==HTTPRequest.RESULT_SUCCESS and code==200 and data is Dictionary and data.get("service")=="colony-world" and data.get("phase")=="P0.3" and data.get("protocol_version")==1
+		online=result==HTTPRequest.RESULT_SUCCESS and code==200 and data is Dictionary and data.get("service")=="colony-world" and data.get("phase")=="P0.4" and data.get("protocol_version")==1
 		status_label.text="● SERVIDOR LOCAL" if online else "● SERVIDOR OFFLINE"
 		status_label.add_theme_color_override("font_color",Color("#a9d7a8") if online else Color("#e5a589"))
-		print("CW_P03_CONNECTED" if online else "CW_P03_OFFLINE")
+		print("CW_P04_CONNECTED" if online else "CW_P04_OFFLINE")
 		return
 	if kind=="logout":
 		close_character_screen()
@@ -348,9 +350,24 @@ func logout() -> void:
 
 
 func close_character_screen()->void:
+	close_world_preview()
 	if is_instance_valid(character_screen):
 		character_screen.queue_free()
 		character_screen=null
 	login_margin.show()
 	harbor.show()
+	if is_instance_valid(harbor.camera):harbor.camera.make_current()
 	harbor.drift_enabled=not reduced_motion
+
+func open_world_preview(character:Dictionary)->void:
+	if is_instance_valid(world_preview):return
+	character_screen.hide()
+	world_preview=WorldPreview.new()
+	add_child(world_preview)
+	world_preview.setup(self,character)
+func close_world_preview()->void:
+	if is_instance_valid(world_preview):
+		world_preview.village.enabled=false
+		world_preview.queue_free()
+		world_preview=null
+	if is_instance_valid(character_screen):character_screen.show()

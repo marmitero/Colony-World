@@ -10,7 +10,7 @@ import (
 )
 
 const ProtocolVersion = 1
-const Phase = "P0.3"
+const Phase = "P0.4"
 
 type Health struct {
 	Service         string `json:"service"`
@@ -30,7 +30,7 @@ func NewHandler(s *auth.Service) http.Handler {
 		write(w, 200, Health{"colony-world", "ok", Phase, ProtocolVersion, "local_file"})
 	})
 	mux.HandleFunc("GET /v1/hello", func(w http.ResponseWriter, r *http.Request) {
-		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "character_selection", "gameplay": false})
+		write(w, 200, map[string]any{"service": "colony-world", "phase": Phase, "protocol_version": ProtocolVersion, "world": "Bravamar", "mode": "world_preview", "gameplay": false})
 	})
 	mux.HandleFunc("POST /v1/auth/register", func(w http.ResponseWriter, r *http.Request) {
 		var c credentials

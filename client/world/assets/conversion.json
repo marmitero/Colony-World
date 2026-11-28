@@ -1,0 +1,1215 @@
+[
+  {
+    "id": "house2",
+    "pack": "Q05",
+    "stem": "House_2",
+    "height": 5.3,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/House_2.fbx",
+    "source_size_m": [
+      2.2202,
+      3.42,
+      3.2504
+    ],
+    "scale": 1.630592,
+    "mesh_count": 1,
+    "triangles": 7162,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 483552
+  },
+  {
+    "id": "house3",
+    "pack": "Q05",
+    "stem": "House_3",
+    "height": 5.4,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/House_3.fbx",
+    "source_size_m": [
+      1.9369,
+      2.1236,
+      2.089
+    ],
+    "scale": 2.584983,
+    "mesh_count": 1,
+    "triangles": 4668,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 253804
+  },
+  {
+    "id": "house4",
+    "pack": "Q05",
+    "stem": "House_4",
+    "height": 5.3,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/House_4.fbx",
+    "source_size_m": [
+      1.9369,
+      2.1236,
+      1.0733
+    ],
+    "scale": 4.93803,
+    "mesh_count": 1,
+    "triangles": 3024,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 203364
+  },
+  {
+    "id": "inn",
+    "pack": "Q05",
+    "stem": "Inn",
+    "height": 6.3,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/Inn.fbx",
+    "source_size_m": [
+      4.0291,
+      4.0214,
+      3.4912
+    ],
+    "scale": 1.804536,
+    "mesh_count": 1,
+    "triangles": 7756,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 466276
+  },
+  {
+    "id": "smith",
+    "pack": "Q05",
+    "stem": "Blacksmith",
+    "height": 4.8,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/Blacksmith.fbx",
+    "source_size_m": [
+      3.89,
+      3.2835,
+      3.0034
+    ],
+    "scale": 1.598181,
+    "mesh_count": 1,
+    "triangles": 7659,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 618276
+  },
+  {
+    "id": "mill",
+    "pack": "Q05",
+    "stem": "Mill",
+    "height": 7,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/Mill.fbx",
+    "source_size_m": [
+      3.3968,
+      2.7308,
+      4.8037
+    ],
+    "scale": 1.457217,
+    "mesh_count": 2,
+    "triangles": 8126,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 518828
+  },
+  {
+    "id": "sawmill",
+    "pack": "Q05",
+    "stem": "Sawmill",
+    "height": 4.5,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/Sawmill.fbx",
+    "source_size_m": [
+      4.3991,
+      3.2835,
+      2.8625
+    ],
+    "scale": 1.572068,
+    "mesh_count": 1,
+    "triangles": 4335,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 288560
+  },
+  {
+    "id": "stable",
+    "pack": "Q05",
+    "stem": "Stable",
+    "height": 4.3,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/Stable.fbx",
+    "source_size_m": [
+      4.7007,
+      3.3274,
+      2.4899
+    ],
+    "scale": 1.726983,
+    "mesh_count": 1,
+    "triangles": 6246,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 409280
+  },
+  {
+    "id": "tower",
+    "pack": "Q05",
+    "stem": "Bell_Tower",
+    "height": 7.5,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Buildings/FBX/Bell_Tower.fbx",
+    "source_size_m": [
+      1.9369,
+      2.2285,
+      4.7606
+    ],
+    "scale": 1.575429,
+    "mesh_count": 1,
+    "triangles": 11799,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 725284
+  },
+  {
+    "id": "market2",
+    "pack": "Q05",
+    "stem": "MarketStand_2",
+    "height": 2.75,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/MarketStand_2.fbx",
+    "source_size_m": [
+      0.5172,
+      1.1542,
+      1.0421
+    ],
+    "scale": 2.638777,
+    "mesh_count": 1,
+    "triangles": 1132,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 53040
+  },
+  {
+    "id": "barrel",
+    "pack": "Q05",
+    "stem": "Barrel",
+    "height": 0.75,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Barrel.fbx",
+    "source_size_m": [
+      0.1582,
+      0.1568,
+      0.2043
+    ],
+    "scale": 3.670536,
+    "mesh_count": 1,
+    "triangles": 1312,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 51432
+  },
+  {
+    "id": "bench",
+    "pack": "Q05",
+    "stem": "Bench_1",
+    "height": 0.8,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Bench_1.fbx",
+    "source_size_m": [
+      0.665,
+      0.2424,
+      0.3158
+    ],
+    "scale": 2.532996,
+    "mesh_count": 1,
+    "triangles": 376,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 17916
+  },
+  {
+    "id": "hay",
+    "pack": "Q05",
+    "stem": "Hay",
+    "height": 0.9,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Hay.fbx",
+    "source_size_m": [
+      0.121,
+      0.1249,
+      0.1785
+    ],
+    "scale": 5.041959,
+    "mesh_count": 1,
+    "triangles": 488,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 26860
+  },
+  {
+    "id": "cauldron",
+    "pack": "Q05",
+    "stem": "Cauldron",
+    "height": 1.05,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Cauldron.fbx",
+    "source_size_m": [
+      0.3607,
+      0.2988,
+      0.2518
+    ],
+    "scale": 4.170103,
+    "mesh_count": 1,
+    "triangles": 1238,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 45488
+  },
+  {
+    "id": "gazebo",
+    "pack": "Q05",
+    "stem": "Gazebo",
+    "height": 3.4,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Gazebo.fbx",
+    "source_size_m": [
+      1.037,
+      1.2594,
+      1.3471
+    ],
+    "scale": 2.523872,
+    "mesh_count": 1,
+    "triangles": 698,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 46188
+  },
+  {
+    "id": "bonfire",
+    "pack": "Q05",
+    "stem": "Bonfire_Lit",
+    "height": 1.15,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Medieval Village Pack - Dec 2020/Props/FBX/Bonfire_Lit.fbx",
+    "source_size_m": [
+      0.4066,
+      0.3624,
+      0.3529
+    ],
+    "scale": 3.259168,
+    "mesh_count": 1,
+    "triangles": 1162,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 48840
+  },
+  {
+    "id": "npc_cleric",
+    "pack": "Q01",
+    "stem": "Cleric",
+    "height": 1.75,
+    "category": "characters",
+    "format": "fbx",
+    "source_member": "RPG Characters - Nov 2020/FBX/Cleric.fbx",
+    "source_size_m": [
+      1.7944,
+      2.5118,
+      2.9097
+    ],
+    "scale": 0.601441,
+    "mesh_count": 4,
+    "triangles": 5104,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "CharacterArmature|CharacterArmature|Attack_Idle",
+        "frames": [
+          1.0,
+          41.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Death",
+        "frames": [
+          1.0,
+          29.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Weapon",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|PickUp",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Punch",
+        "frames": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit_Attacking",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Roll",
+        "frames": [
+          1.0,
+          25.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run_Weapon",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Spell1",
+        "frames": [
+          1.0,
+          30.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Spell2",
+        "frames": [
+          1.0,
+          36.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Staff_Attack",
+        "frames": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Walk",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "name": "Cleric_Texture.png",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 1647736
+  },
+  {
+    "id": "npc_ranger",
+    "pack": "Q01",
+    "stem": "Ranger",
+    "height": 1.75,
+    "category": "characters",
+    "format": "fbx",
+    "source_member": "RPG Characters - Nov 2020/FBX/Ranger.fbx",
+    "source_size_m": [
+      1.2234,
+      2.2005,
+      2.9833
+    ],
+    "scale": 0.586593,
+    "mesh_count": 6,
+    "triangles": 3806,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "CharacterArmature|CharacterArmature|Bow_Attack_Draw",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Bow_Attack_Shoot",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Death",
+        "frames": [
+          1.0,
+          29.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Attacking",
+        "frames": [
+          1.0,
+          41.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Weapon",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|PickUp",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Punch",
+        "frames": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit_Attacking",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Roll",
+        "frames": [
+          1.0,
+          25.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run_Holding",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Walk",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "name": "Ranger_Bow_Texture.png",
+        "resolved": true,
+        "size": [
+          512,
+          512
+        ]
+      },
+      {
+        "name": "Ranger_Texture.png",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 1828352
+  },
+  {
+    "id": "npc_rogue",
+    "pack": "Q01",
+    "stem": "Rogue",
+    "height": 1.75,
+    "category": "characters",
+    "format": "fbx",
+    "source_member": "RPG Characters - Nov 2020/FBX/Rogue.fbx",
+    "source_size_m": [
+      1.5596,
+      2.0768,
+      2.9998
+    ],
+    "scale": 0.583373,
+    "mesh_count": 8,
+    "triangles": 2326,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "CharacterArmature|CharacterArmature|Attacking_Idle",
+        "frames": [
+          1.0,
+          41.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Dagger_Attack",
+        "frames": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Dagger_Attack2",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Death",
+        "frames": [
+          1.0,
+          29.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|PickUp",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Punch",
+        "frames": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit_Attacking",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Roll",
+        "frames": [
+          1.0,
+          25.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Walk",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "name": "Rogue_Texture.png",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 1239992
+  },
+  {
+    "id": "npc_warrior",
+    "pack": "Q01",
+    "stem": "Warrior",
+    "height": 1.8,
+    "category": "characters",
+    "format": "fbx",
+    "source_member": "RPG Characters - Nov 2020/FBX/Warrior.fbx",
+    "source_size_m": [
+      1.6632,
+      2.5964,
+      2.9985
+    ],
+    "scale": 0.600304,
+    "mesh_count": 5,
+    "triangles": 5402,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "CharacterArmature|CharacterArmature|Death",
+        "frames": [
+          1.0,
+          29.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Attacking",
+        "frames": [
+          1.0,
+          41.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Weapon",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|PickUp",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Punch",
+        "frames": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit_Attacking",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Roll",
+        "frames": [
+          1.0,
+          25.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run_Weapon",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Sword_Attack",
+        "frames": [
+          1.0,
+          21.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Sword_AttackFast",
+        "frames": [
+          1.0,
+          21.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Walk",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "name": "Warrior_Texture.png",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 1507692
+  },
+  {
+    "id": "npc_wizard",
+    "pack": "Q01",
+    "stem": "Wizard",
+    "height": 1.75,
+    "category": "characters",
+    "format": "fbx",
+    "source_member": "RPG Characters - Nov 2020/FBX/Wizard.fbx",
+    "source_size_m": [
+      1.5244,
+      2.1191,
+      3.1267
+    ],
+    "scale": 0.559691,
+    "mesh_count": 7,
+    "triangles": 5376,
+    "rig_count": 1,
+    "actions": [
+      {
+        "name": "CharacterArmature|CharacterArmature|Death",
+        "frames": [
+          1.0,
+          29.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Attacking",
+        "frames": [
+          1.0,
+          41.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Idle_Weapon",
+        "frames": [
+          1.0,
+          76.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|PickUp",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Punch",
+        "frames": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|RecieveHit_Attacking",
+        "frames": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Roll",
+        "frames": [
+          1.0,
+          25.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Run_Weapon",
+        "frames": [
+          1.0,
+          22.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Spell1",
+        "frames": [
+          1.0,
+          30.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Spell2",
+        "frames": [
+          1.0,
+          36.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Staff_Attack",
+        "frames": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "CharacterArmature|CharacterArmature|Walk",
+        "frames": [
+          1.0,
+          31.0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "name": "Wizard_Texture.png",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 1526000
+  },
+  {
+    "id": "pumpkin",
+    "pack": "Q08",
+    "stem": "Pumpkin_4",
+    "height": 0.6,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Nature Crops Pack - Jan 2020/FBX/Pumpkin_4.fbx",
+    "source_size_m": [
+      1.2897,
+      1.0753,
+      0.59
+    ],
+    "scale": 1.016986,
+    "mesh_count": 1,
+    "triangles": 2896,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 158564
+  },
+  {
+    "id": "wheat",
+    "pack": "Q08",
+    "stem": "Wheat_4",
+    "height": 0.75,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Nature Crops Pack - Jan 2020/FBX/Wheat_4.fbx",
+    "source_size_m": [
+      0.0978,
+      0.0559,
+      0.948
+    ],
+    "scale": 0.791145,
+    "mesh_count": 1,
+    "triangles": 102,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 6416
+  },
+  {
+    "id": "roof_small",
+    "pack": "Q13",
+    "stem": "Roof_RoundTiles_4x6",
+    "height": 2.5,
+    "category": "environment",
+    "format": "gltf",
+    "source_member": "glTF/Roof_RoundTiles_4x6.gltf",
+    "source_size_m": [
+      5.5131,
+      7.5723,
+      4.2336
+    ],
+    "scale": 0.590516,
+    "mesh_count": 1,
+    "triangles": 2520,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [
+      {
+        "name": "T_RoundTiles_BaseColor",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_RoundTiles_Normal",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_RoundTiles_Roughness",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_WoodTrim_BaseColor",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_WoodTrim_Normal",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_WoodTrim_Roughness",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 5606960
+  },
+  {
+    "id": "roof_large",
+    "pack": "Q13",
+    "stem": "Roof_RoundTiles_8x10",
+    "height": 3.1,
+    "category": "environment",
+    "format": "gltf",
+    "source_member": "glTF/Roof_RoundTiles_8x10.gltf",
+    "source_size_m": [
+      9.952,
+      11.8594,
+      6.7813
+    ],
+    "scale": 0.457138,
+    "mesh_count": 1,
+    "triangles": 4480,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [
+      {
+        "name": "T_RoundTiles_BaseColor",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_RoundTiles_Normal",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_RoundTiles_Roughness",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_WoodTrim_BaseColor",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_WoodTrim_Normal",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      {
+        "name": "T_WoodTrim_Roughness",
+        "resolved": true,
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ],
+    "output_bytes": 5708760
+  },
+  {
+    "id": "bush",
+    "pack": "Q08",
+    "stem": "BushBerries_4",
+    "height": 1.05,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Nature Crops Pack - Jan 2020/FBX/BushBerries_4.fbx",
+    "source_size_m": [
+      1.7189,
+      1.3924,
+      1.276
+    ],
+    "scale": 0.822886,
+    "mesh_count": 1,
+    "triangles": 892,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 50200
+  },
+  {
+    "id": "flowers",
+    "pack": "Q08",
+    "stem": "Flower_4",
+    "height": 0.46,
+    "category": "environment",
+    "format": "fbx",
+    "source_member": "Nature Crops Pack - Jan 2020/FBX/Flower_4.fbx",
+    "source_size_m": [
+      0.2918,
+      0.2926,
+      0.8209
+    ],
+    "scale": 0.560327,
+    "mesh_count": 1,
+    "triangles": 230,
+    "rig_count": 0,
+    "actions": [],
+    "textures": [],
+    "output_bytes": 14384
+  }
+]
